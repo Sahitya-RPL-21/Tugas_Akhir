@@ -1,52 +1,63 @@
 @extends('newwelcome')
 
-@section('content')
-    <div class="container mx-auto">
-        <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Laporan Barang</h1>
-            <p class="text-sm text-gray-500">Galeri Inventaris</p>
-        </div>
+@section('role_name', 'Dashboard Admin Stok')
+@section('page_title', 'ADMIN STOK')
 
-        <div class="overflow-x-auto bg-white shadow rounded-lg">
-            <table class="min-w-full text-sm text-center text-gray-700">
-                <thead class="bg-green-700 text-white">
+@section('content')
+<div class="p-6">
+    <div class="max-w-7xl mx-auto p-6">
+        <h1 class="text-4xl font-bold mb-8 text-gray-800">Laporan Barang</h1>
+
+        <div class="overflow-x-auto bg-white rounded-xl shadow-md">
+            <table class="min-w-full text-gray-700 text-center">
+                <thead class="bg-[#173720] text-white">
                     <tr>
-                        <th class="px-4 py-3">No</th>
-                        <th class="px-4 py-3">Kode Barang</th>
-                        <th class="px-4 py-3">Nama Barang</th>
-                        <th class="px-4 py-3">Kategori</th>
-                        <th class="px-4 py-3">Barang Masuk</th>
-                        <th class="px-4 py-3">Barang Keluar</th>
-                        <th class="px-4 py-3">Stok</th>
-                        <th class="px-4 py-3">Status</th>
+                        <th class="p-4 text-center text-sm uppercase">No</th>
+                        <th class="p-4 text-center text-sm uppercase">Kode Barang</th>
+                        <th class="p-4 text-center text-sm uppercase">Nama Barang</th>
+                        <th class="p-4 text-center text-sm uppercase">Kategori</th>
+                        <th class="p-4 text-center text-sm uppercase">Barang Masuk</th>
+                        <th class="p-4 text-center text-sm uppercase">Barang Keluar</th>
+                        <th class="p-4 text-center text-sm uppercase">Stok</th>
+                        <th class="p-4 text-center text-sm uppercase">Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Contoh data, bisa diulang dengan loop jika pakai Laravel/Blade -->
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-4 py-2">1</td>
-                        <td class="px-4 py-2">KODE001</td>
-                        <td class="px-4 py-2">Printer Epson L3110</td>
-                        <td class="px-4 py-2">Elektronik</td>
-                        <td class="px-4 py-2">10</td>
-                        <td class="px-4 py-2">2</td>
-                        <td class="px-4 py-2">8</td>
-                        <td class="px-4 py-2 text-green-600 font-semibold">Tersedia</td>
+                    <tr class="border-b hover:bg-green-50 transition">
+                        <td class="p-4">1</td>
+                        <td class="p-4">KODE001</td>
+                        <td class="p-4">Printer Epson L3110</td>
+                        <td class="p-4">Elektronik</td>
+                        <td class="p-4">10</td>
+                        <td class="p-4">2</td>
+                        <td class="p-4">8</td>
+                        <td class="p-4 text-green-600 font-semibold">Tersedia</td>
                     </tr>
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-4 py-2">2</td>
-                        <td class="px-4 py-2">KODE002</td>
-                        <td class="px-4 py-2">Kabel LAN 10m</td>
-                        <td class="px-4 py-2">Aksesoris</td>
-                        <td class="px-4 py-2">20</td>
-                        <td class="px-4 py-2">20</td>
-                        <td class="px-4 py-2">0</td>
-                        <td class="px-4 py-2 text-red-600 font-semibold">Habis</td>
+                    <tr class="hover:bg-green-50 transition">
+                        <td class="p-4">2</td>
+                        <td class="p-4">KODE002</td>
+                        <td class="p-4">Kabel LAN 10m</td>
+                        <td class="p-4">Aksesoris</td>
+                        <td class="p-4">20</td>
+                        <td class="p-4">20</td>
+                        <td class="p-4">0</td>
+                        <td class="p-4 text-red-500 font-semibold">Habis</td>
                     </tr>
-                    <!-- Tambah baris lainnya sesuai data -->
                 </tbody>
             </table>
         </div>
     </div>
+
+    <div class="mt-6 flex justify-center">
+        <button onclick="window.print()" class="bg-[#173720] hover:bg-green-800 text-white font-semibold py-2 px-5 rounded-lg shadow-md">
+            <svg class="inline-block mr-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5 16H5.5V22H18.5V16Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M2 10H22V19H18.5086V16H5.49025V19H2V10Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M19 2H5V10H19V2Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+            </svg>
+            Cetak Laporan
+        </button>
+    </div>
+</div>
 
 @endsection

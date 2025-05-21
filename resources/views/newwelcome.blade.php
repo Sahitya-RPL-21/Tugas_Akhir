@@ -6,28 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GALERI INVENTARIS TPKU</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+        }
+    </style>
 </head>
 
 <body class="">
-    <div class="flex h-screen bg-gray-100">
+    <div class="flex min-h-screen bg-gray-100">
 
         <input type="checkbox" id="menu-toggle" class="hidden peer" checked>
 
-        <div class="hidden peer-checked:flex flex flex-col w-64 bg-green-800 transition-all duration-300 ease-in-out">
+        <div class="hidden peer-checked:flex flex flex-col w-64 bg-green-900 transition-all duration-300 ease-in-out">
             <div class="flex items-center justify-between h-16 bg-green-900 px-4">
                 <span class="text-white font-bold uppercase">Galeri Inventaris</span>
             </div>
-
             <div class="flex flex-col flex-1 overflow-y-auto">
-                <nav class="flex-1 px-2 py-4 bg-green-800">
-                    <a href="/" class="flex items-center w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-gray-700 group">
+                <nav class="flex-1 px-2 py-4 bg-[#173720]">
+                    <a href="/" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M22 22V10L12 2L2 10V22H8V13H16V22H22Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
                             <path d="M12 22V17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         Beranda
                     </a>
-                    <a href="/daftarbarang" class="flex items-center w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-gray-700 group">
+                    <a href="/daftarbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2.5 5L4 6.5L7 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M2.5 12L4 13.5L7 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -46,7 +51,7 @@
                                 d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
                         </svg>
                     </div>
-                    <a href="laporanbarang" class="flex items-center w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-gray-700 group">
+                    <a href="laporanbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M16 3H11V21H16V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
                             <path d="M21 3H16V21H21V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
@@ -56,19 +61,35 @@
                         </svg>
                         Laporan Barang
                     </a>
-                    <form method="POST" action="{{ route('logout') }}" class="mb-4">
-                        @csrf
-                        <button type="submit" class="flex items-center w-full px-4 py-2 text-left text-gray-100 hover:bg-gray-700 group">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 3H9C7.89543 3 7 3.89543 7 5V19C7 20.1046 7.89543 21 9 21H15C16.1046 21 17 20.1046 17 19V5C17 3.89543 16.1046 3 15 3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-                                <path d="M10 12H21M21 12L18 9M21 12L18 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            Log Out
-                        </button>
-                    </form>
+                    <div class="mb-2 relative group">
+                    <a href="/tambahuser" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M4 20C4 16.6863 7.58172 14 12 14C16.4183 14 20 16.6863 20 20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M16 8H20M18 6V10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Tambah User
+                    </a>
+                    <a href="/datapenjualan" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3H21V21H3V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M7 7H17V17H7V7Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M10 10H14V14H10V10Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                        </svg>
+                        Data Penjualan
+                    </a>
+                    </div>
+                    <button onclick="document.getElementById('logoutModal').classList.remove('hidden')" class="flex items-center gap-3 w-full bg-[#c0392b] hover:bg-[#e74c3c] p-2 rounded-md text-white text-sm transition">
+                        <svg width=" 24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 3H9C7.89543 3 7 3.89543 7 5V19C7 20.1046 7.89543 21 9 21H15C16.1046 21 17 20.1046 17 19V5C17 3.89543 16.1046 3 15 3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M10 12H21M21 12L18 9M21 12L18 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Log Out
+                    </button>
                 </nav>
             </div>
         </div>
+
         <div class="flex flex-col flex-1 overflow-y-auto">
             <!-- header -->
             <div class="flex items-center justify-between h-16 bg-white border-b border-gray-200">
@@ -82,18 +103,28 @@
                         </svg>
                     </label>
                 </div>
-
                 <div class="flex items-center space-x-4">
-                    <span class="text-gray-700 mfont-semibold hidden sm:inline">ADMIN STOK</span>
-                    <img src="https://ui-avatars.com/api/?name=User&background=1f2937&color=fff&size=32"
-                        alt="Profile"
-                        class="w-8 h-8 rounded-full border-2 border-gray-300 cursor-pointer">
+                    <span class="text-sm font-bold text-gray-700 pr-8">@yield('page_title', 'SUPERADMIN')</span>
                 </div>
             </div>
-
             <section>
                 @yield('content')
             </section>
+        </div>
+    </div>
+    <!-- Modal Log Out -->
+    <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 text-center">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Konfirmasi Logout</h2>
+            <p class="text-gray-600 mb-6">Apakah Anda yakin ingin logout?</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="document.getElementById('logoutModal').classList.add('hidden')" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">
+                    Batal
+                </button>
+                <a href="{{ route('logout') }}" class="px-4 py-2 bg-[#173720] text-white rounded-lg hover:bg-green-900 transition">
+                    Logout
+                </a>
+            </div>
         </div>
     </div>
 

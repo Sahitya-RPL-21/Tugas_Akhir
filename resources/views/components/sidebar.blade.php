@@ -15,6 +15,7 @@ $role = Auth::user()->role;
                 <svg width="24" height="24" ...>...</svg>
                 Beranda
             </a>
+            @endif
 
             {{-- Admin Stok dan Super Admin: Daftar Barang --}}
             @if ($role === 'admin_stok' || $role === 'super_admin')
@@ -26,14 +27,14 @@ $role = Auth::user()->role;
             @endif
 
             {{-- Laporan: Admin Stok, Kepala TPKU, Super Admin --}}
-            @if (in_array($role, ['admin_stok', 'kepala_tpk', 'super_admin']))
+            @if (in_array($role, ['admin_stok', 'kepala_tpku', 'super_admin']))
             <a href="/laporanbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
                 <!-- ikon -->
                 <svg width="24" height="24" ...>...</svg>
                 Laporan Barang
             </a>
             @endif
-
+0
             {{-- Tombol Logout: semua role --}}
             <button onclick="document.getElementById('logoutModal').classList.remove('hidden')" class="flex items-center gap-3 w-full bg-[#c0392b] hover:bg-[#e74c3c] p-2 rounded-md text-white text-sm transition">
                 <svg width=" 24" height="24" ...>...</svg>

@@ -12,20 +12,42 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'username' => 'required',
             'password' => 'required',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('homeadmin')->with('message', 'Login successful');
+            } elseif (Auth::user()->role === 'kepala') {
+                return redirect()->route('kepala')->with('message', 'Login successful');
+            }
             return redirect()->route('home')->with('message', 'Login successful');
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+            'username' => 'Username dan Password tidak cocok.',
+        ])->onlyInput('username');
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'role' => 'required',
+            'password' => 'required|string|min:5',
+        ]);
+
+        User::create([
+            'username' => $request->username,
+            'role' => $request->role,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return redirect()->route('homeadmin')->with('success', 'Registration successful');
     }
 }
-

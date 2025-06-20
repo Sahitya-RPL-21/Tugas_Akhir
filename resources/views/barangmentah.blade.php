@@ -6,6 +6,7 @@
             <th class="p-4 text-center text-sm uppercase">Nama Barang</th>
             <th class="p-4 text-center text-sm uppercase">Kategori</th>
             <th class="p-4 text-center text-sm uppercase">Stok</th>
+            <th class="p-4 text-center text-sm uppercase">Unit</th>
             <th class="p-4 text-center text-sm uppercase">Status</th>
             <th class="p-4 text-center text-sm uppercase">Aksi</th>
         </tr>

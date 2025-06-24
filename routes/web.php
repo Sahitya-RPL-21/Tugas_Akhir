@@ -37,22 +37,44 @@ Route::post('/barangjadi', [BarangController::class, 'inventory'])->name('barang
 
 // daftarbarang //
 Route::get('/daftarbarang', [BarangController::class, 'daftarbarang'])->name('daftarbarang');
-Route::get('/daftarbarangbuat', [BarangController::class, 'daftarbarangbuat'])->name('daftarbarangbuat');
 Route::get('/daftarbarang/create', [BarangController::class, 'create'])->name('barang.create');
-Route::delete('/daftarbarang/{id}', [BarangController::class, 'destroy'])->name('barang.destroy');
+Route::get('/daftarbarang/{id}/edit', [BarangController::class, 'editNamaBarang'])->name('barang.updateNama');
+Route::put('/daftarbarang/{id}', [BarangController::class, 'updateNamaBarang'])->name('daftarbarang.update');
 Route::delete('/histori/{id}', [BarangController::class, 'destroyHistori'])->name('histori.destroy');
+
+Route::get('/stokopname', [BarangController::class, 'stokopname'])->name('stokopname');
+Route::post('/stokopname/tambah', [BarangController::class, 'tambahStokOpname'])->name('stokopname.tambah');
+Route::put('/stokopname/{id}/update', [BarangController::class, 'updateStokOpname'])->name('stokopname.update');
+Route::get('/stokopname/{id}/hapus', [BarangController::class, 'hapusStokOpname'])->name('stokopname.hapus');
+
+// Master Barang
+Route::get('/masterbarang', [BarangController::class, 'masterbarang'])->name('masterbarang');
+Route::post('/masterbarang/tambahbaru', [BarangController::class, 'tambahbarang'])->name('masterbarang.tambahbaru');
+Route::post('/masterbarang/store', [BarangController::class, 'storeMaster'])->name('masterbarang.store');
+Route::get('/masterbarang/{id}/edit', [BarangController::class, 'editMaster'])->name('masterbarang.edit');
+Route::put('/masterbarang/{id}', [BarangController::class, 'updateMaster'])->name('masterbarang.update');
+Route::delete('/masterbarang/{id}', [BarangController::class, 'destroyMaster'])->name('masterbarang.destroy');
 /*
 |--------------------------------------------------------------------------
-| Home Barang Jadi
+| Home Barang Masuk
 |--------------------------------------------------------------------------
 */
-Route::get('/homebarangjadi', [BarangController::class, 'tampilkanbarang'])->name('homebarangjadi');
-Route::post('/homebarangjadi/tambah', [BarangController::class, 'tambahbarang'])->name('homebarangjadi.tambah');
-Route::get('/homebarangjadi/{kode_barang}/hapus', [BarangController::class, 'hapus'])->name('homebarangjadi.hapus');
+Route::get('/homebarangmasuk', [BarangController::class, 'tampilkanbarang'])->name('homebarangmasuk');
+Route::post('/homebarangmasuk/tambah', [BarangController::class, 'tambahbarang'])->name('homebarangmasuk.tambah');
+Route::get('/homebarangmasuk/{kode_barang}/hapus', [BarangController::class, 'hapus'])->name('homebarangmasuk.hapus');
 Route::get('/jadi', [BarangController::class, 'tampilkanbarangsearch'])->name('jadi');
-Route::put('/homebarangjadi/updateStok', [BarangController::class, 'updateBarangJadi'])->name('homebarangjadi.updateStok');
+Route::put('/homebarangmasuk/updateStok', [BarangController::class, 'updateBarangJadi'])->name('homebarangmasuk.updateStok');
 // Route::post('/barangjadi/tambah', [BarangController::class, 'tambahBarangJadi'])->name('barangjadi.tambah');
 // Route::put('/barangjadi/{kode_barang}', [BarangController::class, 'update'])->name('barangjadi.update');
+
+/*
+|--------------------------------------------------------------------------
+| Home Barang Keluar
+|--------------------------------------------------------------------------
+*/
+Route::get('/homebarangkeluar', [BarangController::class, 'homebarangkeluar'])->name('homebarangkeluar');
+Route::post('/homebarangkeluar/tambah', [BarangController::class, 'tambahBarangKeluar'])->name('homebarangkeluar.tambah');
+Route::delete('/homebarangkeluar/{id}/hapus', [BarangController::class, 'hapusBarangKeluar'])->name('homebarangkeluar.hapus');
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +92,8 @@ Route::delete('/barangjadi/{id}', [BarangController::class, 'destroy'])->name('b
 */
 Route::get('/laporanbarang', fn() => view('laporanbarang'))->name('laporanbarang');
 Route::get('/laporan-barang', [LaporanBarangController::class, 'datepicker'])->name('laporanbarang.datepicker');
+
+
 
 // API routes (commented out)
 // Route::get('/api/barang', [BarangController::class, 'apiGetAllBarang']);

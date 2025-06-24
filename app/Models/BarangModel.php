@@ -8,7 +8,7 @@ class BarangModel extends Model
 {
     protected $table = 'barang';
     public $autoIncrement = false;
-    protected $primaryKey = 'kode_barang';
+    protected $primaryKey = 'id';
     protected $keyType = 'string';
     protected $fillable = [
         'kode_barang',

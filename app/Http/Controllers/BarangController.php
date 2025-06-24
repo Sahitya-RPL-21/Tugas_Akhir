@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BarangModel;
+use App\Models\StokOpname;
 use App\Models\Masuk;
+use App\Models\Keluar;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
@@ -20,17 +22,16 @@ class BarangController extends Controller
         return view('daftarbarang', compact('barang'));
     }
 
-    public function daftarbarangbuat()
+    public function editNamaBarang($id)
     {
-        return view('daftarbarangbuat');
+        $barang = BarangModel::findOrFail($id);
+        return view('daftarbarang', compact('barang'));
     }
+
 
     public function tampilkanbarangsearch(Request $request)
     {
         $query = \App\Models\BarangModel::query();
-
-        // Hanya barang jadi
-        $query->where('tipe', 'jadi');
 
         // Jika ada pencarian
         if ($request->has('search') && $request->search != '') {
@@ -42,7 +43,7 @@ class BarangController extends Controller
 
         $barang = $query->paginate(15);
 
-        return view('homebarangjadi', compact('barang'));
+        return view('homebarangmasuk', compact('barang'));
     }
 
     public function inventory(Request $request)
@@ -59,7 +60,7 @@ class BarangController extends Controller
             // Jika barang sudah ada, update stok
             $barang->stok_barang += $request->stok_barang;
             $barang->save();
-            return redirect()->route('homebarangjadi')->with('success', 'Stok barang berhasil ditambahkan!');
+            return redirect()->route('homebarangmasuk')->with('success', 'Stok barang berhasil ditambahkan!');
         } else {
             // Jika barang belum ada, tampilkan error
             return redirect()->back()->with('error', 'Barang tidak ditemukan.');
@@ -79,37 +80,37 @@ class BarangController extends Controller
             'kode_barang' => 'required',
             'nama_barang' => 'required',
             'stok_barang' => 'required|integer|min:0',
+            'kategori_barang' => 'required',
+            'unit_barang' => 'required',
         ]);
 
-        // Catat histori barang masuk
-        Masuk::create([
-            'barang_id' => $request->kode_barang,
-            'jumlah_masuk' => $request->stok_barang,
-        ]);
-
-        // Cari barang berdasarkan kode_barang
+        // Cek apakah barang sudah ada
         $barang = BarangModel::where('kode_barang', $request->kode_barang)->first();
 
         if ($barang) {
-            // Jika barang sudah ada, update stok
+            // Jika barang sudah ada, update stok dan catat histori masuk
             $barang->stok_barang += $request->stok_barang;
             $barang->status_barang = $barang->stok_barang > 0 ? 'Tersedia' : 'Tidak Tersedia';
             $barang->save();
-            return redirect()->route('homebarangjadi')->with('success', 'Stok barang berhasil ditambahkan!');
-        } else {
-            // Jika barang belum ada, buat baru (wajib input kategori & unit jika ingin tambah barang baru)
-            $request->validate([
-                'kategori_barang' => 'required',
-                'unit_barang' => 'required',
+            Masuk::create([
+                'barang_id' => $barang->kode_barang,
+                'jumlah_masuk' => $request->stok_barang,
             ]);
+            return redirect()->route('homebarangmasuk')->with('success', 'Stok barang berhasil ditambahkan!');
+        } else {
+            // Jika barang belum ada, buat baru lalu catat histori masuk
             $data = $request->all();
             $data['tipe'] = 'mentah';
             $data['status_barang'] = $request->stok_barang > 0 ? 'Tersedia' : 'Tidak Tersedia';
-            BarangModel::create($data);
-            return redirect()->route('homebarangjadi')->with('success', 'Barang berhasil ditambahkan');
+            $barangBaru = BarangModel::create($data);
+            Masuk::create([
+                'barang_id' => $barangBaru->kode_barang,
+                'jumlah_masuk' => $request->stok_barang,
+            ]);
+            return redirect()->route('homebarangmasuk')->with('success', 'Barang berhasil ditambahkan');
         }
     }
-
+    
     // Controller untuk menambah barang jadi
     public function tambahBarangJadi(Request $request)
     {
@@ -127,7 +128,7 @@ class BarangController extends Controller
 
         BarangModel::create($data);
 
-        return redirect()->route('homebarangjadi')->with('success', 'Barang jadi berhasil ditambahkan');
+        return redirect()->route('homebarangmasuk')->with('success', 'Barang jadi berhasil ditambahkan');
     }
 
     public function updateBarangJadi(Request $request)
@@ -148,18 +149,7 @@ class BarangController extends Controller
             $barangJadi->save();
         }
 
-        // Update stok barang mentah
-        $barangMentah = BarangModel::where('kode_barang', $request->input('kode_barang'))
-            ->where('tipe', 'mentah')
-            ->first();
-
-        if ($barangMentah) {
-            $barangMentah->stok_barang += $request->input('stok_barang');
-            $barangMentah->status_barang = $barangMentah->stok_barang > 0 ? 'Tersedia' : 'Tidak Tersedia';
-            $barangMentah->save();
-        }
-
-        return redirect()->route('homebarangjadi')->with('success', 'Stok barang jadi & mentah berhasil diperbarui.');
+        return redirect()->route('homebarangmasuk')->with('success', 'Stok barang jadi & mentah berhasil diperbarui.');
     }
 
 
@@ -179,14 +169,13 @@ class BarangController extends Controller
         // Jika ada kolom lain yang ingin diedit, tambahkan di sini
         $barang->save();
 
-        return redirect()->route('homebarangjadi')->with('success', 'Informasi barang berhasil diperbarui!');
+        return redirect()->route('homebarangmasuk')->with('success', 'Informasi barang berhasil diperbarui!');
     }
-
 
     public function tampilkantambahbarangjadi()
     {
         $barang = BarangModel::select('nama_barang', 'stok_barang')->get();
-        return view('homebarangjadi', compact('barang'));
+        return view('homebarangmasuk', compact('barang'));
     }
 
     // menampilkan data barang
@@ -195,23 +184,15 @@ class BarangController extends Controller
         // $halaman = session('halaman', 15);
         $databarang = BarangModel::paginate(15);
         $histori = \App\Models\Masuk::with('barang')->orderBy('created_at', 'desc')->get();
-        return view('homebarangjadi', ['barang' => $databarang, 'histori' => $histori]);
+        return view('homebarangmasuk', ['barang' => $databarang, 'histori' => $histori]);
     }
-
-
 
     public function hapus($kode_barang)
     {
         $barang = BarangModel::findOrFail($kode_barang);
         $barang->delete();
 
-        return redirect()->route('homebarangjadi')->with('success', 'Barang berhasil dihapus');
-    }
-
-    function barangmentah()
-    {
-        $databarang = BarangModel::paginate(15);
-        return view('homebarangjadi', ['tipe' => 'mentah', 'barang' => $databarang]);
+        return redirect()->route('homebarangmasuk')->with('success', 'Barang berhasil dihapus');
     }
 
     public function destroy($kode_barang)
@@ -221,7 +202,93 @@ class BarangController extends Controller
         return redirect()->back()->with('success', 'Barang berhasil dihapus.');
     }
 
-    // API untuk menampilkan semua data barang
+
+    // Menampilkan halaman stok opname
+    public function stokopname(Request $request = null)
+    {
+        // Ambil data stok opname, join ke barang jika perlu
+        $stokopname = StokOpname::with('barang')->paginate(15);
+        $barang = BarangModel::all();
+        return view('stokopname', ['stokopname' => $stokopname, 'barang' => $barang]);
+    }
+
+    // Proses update stok dari stok opname
+    public function updatestokopname(Request $request)
+    {
+        $request->validate([
+            'stok_persediaan' => 'required|array',
+            'stok.*' => 'required|integer|min:0',
+        ]);
+
+        foreach ($request->stok as $kode_barang => $stok_baru) {
+            $barang = BarangModel::where('kode_barang', $kode_barang)->first();
+            if ($barang) {
+                $barang->stok_barang = $stok_baru;
+                $barang->status_barang = $stok_baru > 0 ? 'Tersedia' : 'Tidak Tersedia';
+                $barang->save();
+            }
+        }
+
+        return redirect()->route('stokopname')->with('success', 'Stok opname berhasil diperbarui.');
+    }
+
+    public function tambahStokOpname(Request $request)
+    {
+        $request->validate([
+            'kode_barang' => 'required|exists:barang,kode_barang',
+            'stok_persediaan' => 'required|integer|min:0',
+            'keterangan' => 'required'
+        ]);
+
+        $barang = BarangModel::where('kode_barang', $request->kode_barang)->first();
+
+        if (!$barang) {
+            return redirect()->back()->with('error', 'Barang tidak ditemukan.');
+        }
+
+        // Simpan data stok opname
+        StokOpname::create([
+            'kode_barang' => $barang->kode_barang,
+            'stok_awal' => $barang->stok_barang,
+            'stok_persediaan' => $request->stok_persediaan,
+            'selisih_barang' => $request->stok_persediaan - $barang->stok_barang,
+            'keterangan' => $request->input('keterangan', 'Tidak ada keterangan')
+        ]);
+
+        return redirect()->route('stokopname')->with('success', 'Stok opname berhasil ditambahkan dan stok barang diperbarui.');
+    }
+
+    public function masterbarang()
+    {
+        $barang = \App\Models\BarangModel::all();
+        return view('masterbarang', compact('barang'));
+    }
+
+    public function homebarangmasuk(Request $request = null)
+    {
+        // Ambil histori barang masuk terbaru
+        $databarang = BarangModel::paginate(15);
+        $histori = Masuk::with('barang')->orderBy('created_at', 'desc')->get();
+        return view('homebarangmasuk', ['barang' => $databarang, 'histori' => $histori]);
+    }
+
+    public function destroyHistori($id)
+    {
+        $histori = Masuk::findOrFail($id);
+        // Kurangi stok barang sesuai histori yang dihapus
+        $barang = \App\Models\BarangModel::where('kode_barang', $histori->barang_id)->first();
+        if ($barang) {
+            $barang->stok_barang -= $histori->jumlah_masuk;
+            if ($barang->stok_barang < 0) {
+                $barang->stok_barang = 0;
+            }
+            $barang->status_barang = $barang->stok_barang > 0 ? 'Tersedia' : 'Tidak Tersedia';
+            $barang->save();
+        }
+        $histori->delete();
+        return redirect()->route('homebarangmasuk')->with('success', 'Histori barang masuk berhasil dihapus dan stok barang diperbarui.');
+    }
+
     public function apiGetAllBarang()
     {
         $barang = BarangModel::all();
@@ -248,6 +315,61 @@ class BarangController extends Controller
             'data' => $barang
         ]);
     }
+
+    public function homebarangkeluar(Request $request = null)
+    {
+        $databarang = BarangModel::paginate(15);
+        // Jika ada histori barang keluar, ambil di sini (misal model Keluar)
+        $histori = Keluar::with('barang')->orderBy('created_at', 'desc')->get();
+        return view('homebarangkeluar', ['barang' => $databarang, 'historiKeluar' => $histori]);
+    }
+    public function tambahBarangKeluar(Request $request)
+    {
+        $request->validate([
+            'kode_barang' => 'required|exists:barang,kode_barang',
+            'jumlah_keluar' => 'required|integer|min:1',
+        ]);
+
+        // Cari barang berdasarkan kode_barang
+        $barang = BarangModel::where('kode_barang', $request->kode_barang)->first();
+
+        if (!$barang) {
+            return redirect()->back()->with('error', 'Barang tidak ditemukan.');
+        }
+
+        if ($barang->stok_barang < $request->jumlah_keluar) {
+            return redirect()->back()->with('error', 'Stok barang tidak mencukupi.');
+        }
+
+        // Catat histori barang keluar
+        Keluar::create([
+            'barang_id' => $request->kode_barang,
+            'jumlah_keluar' => (int) $request->jumlah_keluar, // pastikan integer dan tidak null
+        ]);
+
+        // Kurangi stok barang
+        $barang->stok_barang -= $request->jumlah_keluar;
+        $barang->status_barang = $barang->stok_barang > 0 ? 'Tersedia' : 'Tidak Tersedia';
+        $barang->save();
+
+        return redirect()->route('homebarangkeluar')->with('success', 'Barang keluar berhasil dicatat dan stok diperbarui.');
+    }
+
+    public function hapusBarangKeluar($id)
+    {
+        $histori = Keluar::findOrFail($id);
+        // Kembalikan stok barang jika histori dihapus
+        $barang = BarangModel::where('kode_barang', $histori->barang_id)->first();
+        if ($barang) {
+            $barang->stok_barang += $histori->jumlah_keluar;
+            $barang->status_barang = $barang->stok_barang > 0 ? 'Tersedia' : 'Tidak Tersedia';
+            $barang->save();
+        }
+        $histori->delete();
+        return redirect()->route('homebarangkeluar')->with('success', 'Histori barang keluar berhasil dihapus dan stok barang dikembalikan.');
+    }
+
+
 
     // API untuk update stok barang
     public function apiUpdateStok(Request $request, $kode_barang)
@@ -280,30 +402,5 @@ class BarangController extends Controller
             'message' => 'Stok barang berhasil diupdate',
             'data' => $barang
         ]);
-    }
-
-    public function homebarangjadi(Request $request = null)
-    {
-        // Ambil histori barang masuk terbaru
-        $databarang = BarangModel::paginate(15);
-        $histori = Masuk::with('barang')->orderBy('created_at', 'desc')->get();
-        return view('homebarangjadi', ['barang' => $databarang, 'histori' => $histori]);
-    }
-
-    public function destroyHistori($id)
-    {
-        $histori = Masuk::findOrFail($id);
-        // Kurangi stok barang sesuai histori yang dihapus
-        $barang = \App\Models\BarangModel::where('kode_barang', $histori->barang_id)->first();
-        if ($barang) {
-            $barang->stok_barang -= $histori->jumlah_masuk;
-            if ($barang->stok_barang < 0) {
-                $barang->stok_barang = 0;
-            }
-            $barang->status_barang = $barang->stok_barang > 0 ? 'Tersedia' : 'Tidak Tersedia';
-            $barang->save();
-        }
-        $histori->delete();
-        return redirect()->route('homebarangjadi')->with('success', 'Histori barang masuk berhasil dihapus dan stok barang diperbarui.');
     }
 }

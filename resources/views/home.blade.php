@@ -10,7 +10,7 @@
 	<h1 class="text-4xl font-bold mb-8 text-gray-800">Beranda</h1>
 
 	<!-- <div class="flex justify-end items-center space-x-4 mb-8">
-		<a href="{{ route('homebarangjadi') }}" class="py-2.5 px-5 bg-[#173720] text-white rounded-lg hover:bg-green-700 transition">
+		<a href="{{ route('homebarangmasuk') }}" class="py-2.5 px-5 bg-[#173720] text-white rounded-lg hover:bg-green-700 transition">
 			Cek Stok</a>
 		<a href="{{ route('barang.mentah') }}" class="py-2.5 px-5 bg-[#173720] text-white rounded-lg hover:bg-green-700 transition">
 			Barang Mentah</a>
@@ -114,118 +114,4 @@
 			</a>
 		</div>
 	</div>
-
-	<!-- Statistik Order -->
-	<div class="bg-white p-8 rounded-2xl shadow-lg col-span-2 mt-8">
-		<div id="bar-chart" class="w-full"></div>
-	</div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script>
-	const chartConfig = {
-		series: [{
-			name: "Sales",
-			data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
-		}],
-		chart: {
-			type: "bar",
-			height: 400,
-			toolbar: {
-				show: false,
-			},
-		},
-		title: {
-			text: "Penjualan Bulanan",
-			align: "center",
-			style: {
-				fontSize: "18px",
-				fontWeight: "bold",
-				color: "#333",
-				fontFamily: "helvetica, sans-serif",
-			},
-		},
-		dataLabels: {
-			enabled: false,
-		},
-		colors: ["#4CAF50"],
-		plotOptions: {
-			bar: {
-				columnWidth: "50%",
-				borderRadius: 4,
-			},
-		},
-		xaxis: {
-			axisTicks: {
-				show: false,
-			},
-			axisBorder: {
-				show: false,
-			},
-			labels: {
-				style: {
-					colors: "#616161",
-					fontSize: "12px",
-					fontFamily: "inherit",
-					fontWeight: 400,
-				},
-			},
-			categories: [
-				"Apr",
-				"May",
-				"Jun",
-				"Jul",
-				"Aug",
-				"Sep",
-				"Oct",
-				"Nov",
-				"Dec",
-			],
-		},
-		yaxis: {
-			labels: {
-				style: {
-					colors: "#616161",
-					fontSize: "12px",
-					fontFamily: "inherit",
-					fontWeight: 400,
-				},
-			},
-		},
-		grid: {
-			show: true,
-			borderColor: "#e0e0e0",
-			strokeDashArray: 4,
-			xaxis: {
-				lines: {
-					show: true,
-				},
-			},
-			padding: {
-				top: 10,
-				right: 20,
-				left: 20,
-			},
-		},
-		fill: {
-			opacity: 0.9,
-		},
-		tooltip: {
-			theme: "light",
-			style: {
-				fontSize: "12px",
-				fontFamily: "inherit",
-			},
-		},
-	};
-
-	const chart = new ApexCharts(document.querySelector("#bar-chart"), chartConfig);
-
-	chart.render();
-
-	function toggleModal() {
-		const modal = document.getElementById('tambahBarangModal');
-		modal.classList.toggle('hidden');
-	}
-</script>
 @endsection

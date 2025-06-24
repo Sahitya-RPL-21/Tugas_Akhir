@@ -35,31 +35,59 @@
                         </svg>
                         Beranda
                     </a>
-                    <a href="/daftarbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('daftarbarang*') ? 'bg-green-900 font-bold' : '' }}">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 5H21V19H3V5Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-                            <path d="M7 5V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M3 19V21C3 21.5523 3.44772 22 4 22H20C20.5523 22 21 21.5523 21 21V19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Daftar Barang
-                    <a href="/homebarangjadi" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('daftarbarang*') ? 'bg-green-900 font-bold' : '' }}">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2.5 5L4 6.5L7 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M2.5 12L4 13.5L7 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M2.5 19L4 20.5L7 17.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M10.5 12H21.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M10.5 19H21.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M10.5 5H21.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" type="button" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('masterbarang*') ? 'bg-green-900 font-bold' : '' }}">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="3" y="3" width="18" height="18" rx="2" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                                <path d="M3 9H21" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                <path d="M9 21V9" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+                            Data Barang
+                            <svg class="ml-auto h-4 w-4 transition-transform" :class="{'rotate-180': open}" fill="none" stroke="white" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="open" @click.away="open = false" class="mt-1 ml-4 space-y-1 rounded shadow-lg z-10 bg-[#173720]" style="display: none;">
+                            <a href="/masterbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('masterbarang') ? 'font-bold' : '' }}">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <path d="M8 8H16V16H8V8Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+                                </svg>
+                                Master Barang
+                            </a>
+                            <a href="/daftarbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('daftarbarang*') ? 'font-bold' : '' }}">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 5H21V19H3V5Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                                    <path d="M7 5V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M3 19V21C3 21.5523 3.44772 22 4 22H20C20.5523 22 21 21.5523 21 21V19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                Daftar Barang
+                            </a>
+                            <a href="/stokopname" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('stokopname*') ? 'font-bold' : '' }}">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                                    <path d="M8 9H16M8 13H14" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
+                                Stok Opname
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Alpine.js for dropdown -->
+                    <script src="//unpkg.com/alpinejs" defer></script>
+
+                    <a href="/homebarangmasuk" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('daftarbarang*') ? 'bg-green-900 font-bold' : '' }}">
+                        <svg class="h-6 w-6 text-green-200" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.4953 3.375H3.375V23.625H13.5" stroke="white" stroke-width="1.6875" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M14.0625 18.5625L9 13.5L14.0625 8.4375" stroke="white" stroke-width="1.6875" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M23.625 13.4954H9" stroke="white" stroke-width="1.6875" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         Barang Masuk
                     </a>
-                    <a href="/opsibarangmentah" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('barangmentah*') ? 'bg-green-900 font-bold' : '' }}">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="3" y="7" width="18" height="10" rx="2" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M3 17V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <circle cx="8" cy="12" r="1.5" stroke="white" stroke-width="1.5" />
-                            <circle cx="16" cy="12" r="1.5" stroke="white" stroke-width="1.5" />
+                    <a href="/homebarangkeluar" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('barangmentah*') ? 'bg-green-900 font-bold' : '' }}">
+                        <svg class="h-6 w-6 text-yellow-200" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.9955 3.25H3.25V22.75H13" stroke="white" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M17.875 17.875L22.75 13L17.875 8.125" stroke="white" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M8.66669 12.9955H22.75" stroke="white" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         Barang Keluar
                     </a>

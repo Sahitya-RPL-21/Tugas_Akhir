@@ -65,6 +65,8 @@
                         <th class="p-4 text-center text-sm uppercase">Kategori</th>
                         <th class="p-4 text-center text-sm uppercase">Unit</th>
                         <th class="p-4 text-center text-sm uppercase">Jumlah Masuk</th>
+                        <th class="p-4 text-center text-sm uppercase">User</th>
+                        <th class="p-4 text-center text-sm uppercase">Keterangan</th>
                         <th class="p-4 text-center text-sm uppercase">Aksi</th>
                     </tr>
                 </thead>
@@ -78,15 +80,15 @@
                         <td class="p-4 text-center">{{ $item->barang->kategori_barang ?? '-' }}</td>
                         <td class="p-4 text-center">{{ $item->barang->unit_barang ?? '-' }}</td>
                         <td class="p-4 text-center">{{ $item->jumlah_masuk }}</td>
+                        <td class="p-4 text-center">{{ $item->user->name ?? '-' }}</td>
+                        <td class="p-4 text-center">{{ $item->keterangan ?? '-' }}</td>
                         <td class="p-4 text-center">
                             <form action="{{ route('histori.destroy', $item->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus histori ini?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:text-red-800">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m-7 0v14a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V6" />
-                                        <line x1="10" y1="11" x2="10" y2="17" />
-                                        <line x1="14" y1="11" x2="14" y2="17" />
+                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.25 0C4.2875 0 3.5 0.7875 3.5 1.75H1.75C0.7875 1.75 0 2.5375 0 3.5H12.25C12.25 2.5375 11.4625 1.75 10.5 1.75H8.75C8.75 0.7875 7.9625 0 7 0H5.25ZM1.75 5.25V13.6675C1.75 13.86 1.89 14 2.0825 14H10.185C10.3775 14 10.5175 13.86 10.5175 13.6675V5.25H8.7675V11.375C8.7675 11.865 8.3825 12.25 7.8925 12.25C7.4025 12.25 7.0175 11.865 7.0175 11.375V5.25H5.2675V11.375C5.2675 11.865 4.8825 12.25 4.3925 12.25C3.9025 12.25 3.5175 11.865 3.5175 11.375V5.25H1.7675H1.75Z" fill="#123524" />
                                     </svg>
                                 </button>
                             </form>
@@ -103,7 +105,7 @@
             <div class="relative p-4 w-full max-w-4xl">
                 <div class="bg-white rounded-lg shadow-sm">
                     <div class="flex items-center justify-between p-4 border-b">
-                        <h3 class="text-xl font-semibold text-gray-900">Buat Barang Baru</h3>
+                        <h3 class="text-xl font-semibold text-gray-900">Barang Masuk</h3>
                         <button type="button" onclick="document.getElementById('modalbuatbarang').classList.add('hidden')" class="text-gray-400 hover:text-gray-900 hover:bg-gray-200 rounded-lg text-sm p-2.5 inline-flex items-center">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>

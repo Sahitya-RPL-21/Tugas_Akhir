@@ -7,7 +7,6 @@
 <div class="min-h-screen bg-gray-100 p-6">
     <div class="max-w-7xl mx-auto">
         <h2 class="mb-8 text-4xl font-bold text-gray-800">Master Barang</h2>
-
         <div class="bg-white rounded-lg shadow-md p-6">
             <button type="button"
                 class="mb-6 h-12 flex items-center gap-2 bg-green-900 hover:bg-green-700 text-white font-medium px-6 rounded-lg shadow-md transition-colors duration-200"

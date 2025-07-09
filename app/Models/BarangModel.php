@@ -19,5 +19,6 @@ class BarangModel extends Model
         'unit_barang',
         'stok_barang',
         'status_barang',
+        'user_id'
     ];
 }

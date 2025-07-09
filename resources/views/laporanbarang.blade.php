@@ -53,15 +53,36 @@
                         <th class="py-3 px-4 text-left text-sm uppercase font-semibold">Tanggal</th>
                         <th class="py-3 px-4 text-left text-sm uppercase font-semibold">Kode Barang</th>
                         <th class="py-3 px-4 text-left text-sm uppercase font-semibold">Nama Barang</th>
-                        <th class="py-3 px-4 text-left text-sm uppercase font-semibold">Jenis Transaksi</th>
                         <th class="py-3 px-4 text-left text-sm uppercase font-semibold">Jumlah</th>
                         <th class="py-3 px-4 text-left text-sm uppercase font-semibold">Unit</th>
-                        <th class="py-3 px-4 text-left text-sm uppercase font-semibold">Stok Akhir</th>
-                        <th class="py-3 px-4 text-left text-sm uppercase font-semibold">Keterangan</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- Your table rows will go here --}}
+                    {{-- Contoh data statis tanpa database --}}
+                    <tr class="border-b border-gray-200">
+                        <td class="py-2 px-4">1</td>
+                        <td class="py-2 px-4">01-06-2024</td>
+                        <td class="py-2 px-4">BRG001</td>
+                        <td class="py-2 px-4">Celana SMK</td>
+                        <td class="py-2 px-4">100</td>
+                        <td class="py-2 px-4">pcs</td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                        <td class="py-2 px-4">2</td>
+                        <td class="py-2 px-4">02-06-2024</td>
+                        <td class="py-2 px-4">BRG002</td>
+                        <td class="py-2 px-4">Baju SMP</td>
+                        <td class="py-2 px-4">10</td>
+                        <td class="py-2 px-4">pcs</td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                        <td class="py-2 px-4">3</td>
+                        <td class="py-2 px-4">03-06-2024</td>
+                        <td class="py-2 px-4">BRG003</td>
+                        <td class="py-2 px-4">Sabuk</td>
+                        <td class="py-2 px-4">50</td>
+                        <td class="py-2 px-4">Pcs</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

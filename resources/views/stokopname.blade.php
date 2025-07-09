@@ -55,44 +55,28 @@
                         <th class="p-4 text-center text-sm uppercase font-semibold">Nama Barang</th>
                         <th class="p-4 text-center text-sm uppercase font-semibold">Kode Barang</th>
                         <th class="p-4 text-center text-sm uppercase font-semibold">Stok Awal</th>
-                        <th class="p-4 text-center text-sm uppercase font-semibold">Stok Persediaan</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">Stok Fisik</th>
                         <th class="p-4 text-center text-sm uppercase font-semibold">Selisih</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">User</th>
                         <th class="p-4 text-center text-sm uppercase font-semibold">Keterangan</th>
-                        <th class="p-4 text-center text-sm uppercase font-semibold rounded-tr-lg">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($stokopname as $index => $item)
                     <tr class="border-b border-gray-200 hover:bg-green-50 transition-colors duration-150">
                         <td class="p-4 text-center">{{ $index + $stokopname->firstItem() }}</td>
-                        <td class="p-4 text-center">{{ $item->nama_barang }}</td>
+                        <td class="p-4 text-center">{{ $item->barang->nama_barang }}</td>
                         <td class="p-4 text-center">{{ $item->kode_barang }}</td>
                         <td class="p-4 text-center">{{ $item->stok_awal }}</td>
                         <td class="p-4 text-center">
-                            <form method="POST" action="{{ route('stokopname.update', $item->id) }}" class="flex flex-col gap-2 items-center">
-                                @csrf
-                                @method('PUT')
-                                <input type="number" name="stok_persediaan" value="{{ $item->stok_persediaan }}"
-                                    class="h-10 border border-green-700 rounded-lg px-3 w-24 text-center
-                                           focus:outline-none focus:ring-2 focus:ring-green-700 bg-white
-                                           transition duration-150 ease-in-out" min="0" required>
+                            {{ $item->stok_fisik}}
                         </td>
-                        <td class="p-4 text-center font-semibold {{ ($item->stok_persediaan - $item->stok_awal) < 0 ? 'text-red-600' : 'text-gray-800' }}">
-                            {{ $item->stok_persediaan - $item->stok_awal }}
+                        <td class="p-4 text-center font-semibold {{ ($item->stok_fisik - $item->stok_awal) < 0 ? 'text-red-600' : 'text-gray-800' }}">
+                            {{ $item->stok_fisik - $item->stok_awal }}
                         </td>
+                        <td class="p-4 text-center">{{ $item->user->name ?? '-' }}</td>
                         <td class="p-4 text-center">
-                            <input type="text" name="keterangan" value="{{ $item->keterangan }}"
-                                class="h-10 border border-green-700 rounded-lg px-3 w-32
-                                       focus:outline-none focus:ring-2 focus:ring-green-700 bg-white
-                                       transition duration-150 ease-in-out">
-                        </td>
-                        <td class="p-4 text-center">
-                            <button type="submit"
-                                class="h-10 bg-green-900 hover:bg-green-700 text-white px-5 rounded-lg shadow-md
-                                       transition-colors duration-200 transform hover:scale-105">
-                                Simpan
-                            </button>
-                            </form>
+                            {{ $item->keterangan }}
                         </td>
                     </tr>
                     @empty
@@ -113,7 +97,6 @@
     class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
     {{-- Ini adalah div yang membungkus konten modal (kotak putih) --}}
     {{-- Perhatikan class `z-50` di parent div di atas. Z-index ini harus lebih rendah atau sama dengan konten modal. --}}
-    {{-- Atribut Alpine.js dipindahkan ke sini jika ingin animasi --}}
     <div class="relative p-4 w-full max-w-2xl bg-white rounded-lg shadow-xl"
         x-data="{ showModal: false }"
         x-init="setTimeout(() => { showModal = true; $el.classList.add('scale-100', 'opacity-100'); }, 50)"
@@ -147,8 +130,8 @@
                 </select>
             </div>
             <div>
-                <label for="modal_stok_persediaan" class="block mb-2 text-sm font-medium text-gray-700">Stok Persediaan</label>
-                <input type="number" name="stok_persediaan" id="modal_stok_persediaan" min="0" required
+                <label for="modal_stok_fisik" class="block mb-2 text-sm font-medium text-gray-700">Stok Fisik</label>
+                <input type="number" name="stok_fisik" id="modal_stok_fisik" min="0" required
                     class="w-full border border-green-700 p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition duration-150 ease-in-out" />
             </div>
             <div class="md:col-span-2">

@@ -52,9 +52,9 @@
 					<path d="M9.72278 13.0045H16.2228" stroke="white" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
 					<path d="M3.25 7.04171L7.04167 2.70837H18.9583L22.75 7.04171" stroke="white" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
 				</svg>
-				<h3 class="text-xl font-semibold mt-2">Daftar Barang</h3>
+				<h3 class="text-xl font-semibold mt-2">Stok Barang</h3>
 			</div>
-			<a href="#" class="bg-white text-green-900 px-4 py-2 rounded-full text-sm flex items-center">
+			<a href="/stokbarang" class="bg-white text-green-900 px-4 py-2 rounded-full text-sm flex items-center">
 				Lihat Detail
 				<svg class="w-6 h-6 ml-2" fill="none" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 					<path d="M8 10h4M11 7l3 3-3 3" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -71,7 +71,7 @@
 				</svg>
 				<h3 class="text-xl font-semibold mt-2">Barang Masuk</h3>
 			</div>
-			<a href="#" class="bg-white text-green-900 px-4 py-2 rounded-full text-sm flex items-center">
+			<a href="/homebarangmasuk" class="bg-white text-green-900 px-4 py-2 rounded-full text-sm flex items-center">
 				Lihat Detail
 				<svg class="w-6 h-6 ml-2" fill="none" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 					<path d="M8 10h4M11 7l3 3-3 3" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -88,7 +88,7 @@
 				</svg>
 				<h3 class="text-xl font-semibold mt-2">Barang Keluar</h3>
 			</div>
-			<a href="#" class="bg-white text-green-900 px-4 py-2 rounded-full text-sm flex items-center">
+			<a href="/homebarangkeluar" class="bg-white text-green-900 px-4 py-2 rounded-full text-sm flex items-center">
 				Lihat Detail
 				<svg class="w-6 h-6 ml-2" fill="none" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 					<path d="M8 10h4M11 7l3 3-3 3" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -106,7 +106,7 @@
 				</svg>
 				<h3 class="text-xl font-semibold mt-2">Laporan</h3>
 			</div>
-			<a href="#" class="bg-white text-green-900 px-4 py-2 rounded-full text-sm flex items-center">
+			<a href="/laporanbarang" class="bg-white text-green-900 px-4 py-2 rounded-full text-sm flex items-center">
 				Lihat Detail
 				<svg class="w-6 h-6 ml-2" fill="none" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 					<path d="M8 10h4M11 7l3 3-3 3" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />

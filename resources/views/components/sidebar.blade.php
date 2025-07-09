@@ -4,7 +4,7 @@ $role = Auth::user()->role;
 
 <div class="hidden peer-checked:flex flex flex-col w-64 bg-green-900 transition-all duration-300 ease-in-out">
     <div class="flex items-center justify-between h-16 bg-green-900 px-4">
-        <span class="text-white font-bold uppercase">Galeri Inventaris</span>
+        <span class="text-white font-bold uppercase">STOKIN</span>
     </div>
 
     <div class="flex flex-col flex-1 overflow-y-auto">
@@ -17,12 +17,12 @@ $role = Auth::user()->role;
             </a>
             @endif
 
-            {{-- Admin Stok dan Super Admin: Daftar Barang --}}
+            {{-- Admin Stok dan Super Admin: Stok Barang --}}
             @if ($role === 'admin_stok' || $role === 'super_admin')
-            <a href="/daftarbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
+            <a href="/stokbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
                 <!-- ikon -->
                 <svg width="24" height="24" ...>...</svg>
-                Daftar Barang
+                Stok Barang
             </a>
             @endif
 

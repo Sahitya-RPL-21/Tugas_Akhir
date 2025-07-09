@@ -42,6 +42,11 @@ class UserController extends Controller
             'password' => 'required|string|min:5',
         ]);
 
+        // Cek apakah username sudah ada
+        if (User::where('username', $request->username)->exists()) {
+            return back()->withErrors(['username' => 'Username sudah digunakan.'])->withInput();
+        }
+
         User::create([
             'username' => $request->username,
             'role' => $request->role,

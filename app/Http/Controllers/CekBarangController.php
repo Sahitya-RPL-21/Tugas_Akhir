@@ -8,6 +8,6 @@ class CekBarangController extends Controller
 {
     public function cekStok()
     {
-        return view('daftarbarang');
+        return view('stokbarang');
     }
 }

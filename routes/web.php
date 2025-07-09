@@ -35,11 +35,11 @@ Route::middleware(['auth', 'role:admin'])->get('/homeadmin', function () {
 Route::post('/barangjadi/{kode_barang}/tambah-stok', [BarangController::class, 'tambahStok'])->name('barangjadi.tambahstok');
 Route::post('/barangjadi', [BarangController::class, 'inventory'])->name('barangjadi.inventory');
 
-// daftarbarang //
-Route::get('/daftarbarang', [BarangController::class, 'daftarbarang'])->name('daftarbarang');
-Route::get('/daftarbarang/create', [BarangController::class, 'create'])->name('barang.create');
-Route::get('/daftarbarang/{id}/edit', [BarangController::class, 'editNamaBarang'])->name('barang.updateNama');
-Route::put('/daftarbarang/{id}', [BarangController::class, 'updateNamaBarang'])->name('daftarbarang.update');
+// stokbarang //
+Route::get('/stokbarang', [BarangController::class, 'stokbarang'])->name('stokbarang');
+Route::get('/stokbarang/create', [BarangController::class, 'create'])->name('barang.create');
+Route::get('/stokbarang/{id}/edit', [BarangController::class, 'editNamaBarang'])->name('barang.updateNama');
+Route::put('/stokbarang/{id}', [BarangController::class, 'updateNamaBarang'])->name('stokbarang.update');
 Route::delete('/histori/{id}', [BarangController::class, 'destroyHistori'])->name('histori.destroy');
 
 Route::get('/stokopname', [BarangController::class, 'stokopname'])->name('stokopname');

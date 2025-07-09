@@ -7,6 +7,7 @@ use App\Models\StokOpname;
 use App\Models\Masuk;
 use App\Models\Keluar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BarangController extends Controller
 {
@@ -16,16 +17,16 @@ class BarangController extends Controller
     }
 
     // Menampilkan halaman daftar barang
-    public function daftarbarang()
+    public function stokbarang()
     {
         $barang = BarangModel::all();
-        return view('daftarbarang', compact('barang'));
+        return view('stokbarang', compact('barang'));
     }
 
     public function editNamaBarang($id)
     {
         $barang = BarangModel::findOrFail($id);
-        return view('daftarbarang', compact('barang'));
+        return view('stokbarang', compact('barang'));
     }
 
 
@@ -110,7 +111,7 @@ class BarangController extends Controller
             return redirect()->route('homebarangmasuk')->with('success', 'Barang berhasil ditambahkan');
         }
     }
-    
+
     // Controller untuk menambah barang jadi
     public function tambahBarangJadi(Request $request)
     {
@@ -216,7 +217,7 @@ class BarangController extends Controller
     public function updatestokopname(Request $request)
     {
         $request->validate([
-            'stok_persediaan' => 'required|array',
+            'stok_fisik' => 'required|array',
             'stok.*' => 'required|integer|min:0',
         ]);
 
@@ -236,7 +237,7 @@ class BarangController extends Controller
     {
         $request->validate([
             'kode_barang' => 'required|exists:barang,kode_barang',
-            'stok_persediaan' => 'required|integer|min:0',
+            'stok_fisik' => 'required|integer|min:0',
             'keterangan' => 'required'
         ]);
 
@@ -250,10 +251,14 @@ class BarangController extends Controller
         StokOpname::create([
             'kode_barang' => $barang->kode_barang,
             'stok_awal' => $barang->stok_barang,
-            'stok_persediaan' => $request->stok_persediaan,
-            'selisih_barang' => $request->stok_persediaan - $barang->stok_barang,
-            'keterangan' => $request->input('keterangan', 'Tidak ada keterangan')
+            'stok_fisik' => $request->stok_fisik,
+            'selisih_barang' => $request->stok_fisik - $barang->stok_barang,
+            'keterangan' => $request->keterangan,
+            'user_id' => Auth::user()->id,
         ]);
+
+        $barang->stok_barang = $request->stok_fisik;
+        $barang->save();
 
         return redirect()->route('stokopname')->with('success', 'Stok opname berhasil ditambahkan dan stok barang diperbarui.');
     }

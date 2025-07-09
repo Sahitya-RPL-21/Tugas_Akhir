@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('kode_barang');
             $table->integer('stok_awal')->default(0);
-            $table->integer('stok_persediaan')->default(0);
+            $table->integer('stok_fisik')->default(0);
             $table->integer('selisih_barang')->default(0);
             $table->text('keterangan')->nullable();
             $table->timestamps();

@@ -14,9 +14,10 @@ class StokOpname extends Model
     protected $fillable = [
         'kode_barang',
         'stok_awal',
-        'stok_persediaan',
+        'stok_fisik',
         'selisih_barang',
         'keterangan',
+        'user_id',
     ];
 
     // Jika ingin relasi ke model BarangModel:

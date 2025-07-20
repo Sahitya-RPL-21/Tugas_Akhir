@@ -1,33 +1,108 @@
-extends('newwelcome')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('role_name', 'Dashboard Admin Stok')
-<body class="font-sans bg-white p-10">
-    <div class="header text-center mb-8">
-        <h2 class="text-2xl font-bold mb-2">Data Cetak PDF</h2>
-        <p class="text-gray-600">Silakan klik tombol di bawah untuk mencetak halaman ini ke PDF.</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Barang</title>
+    <style>
+        body {
+            font-family: 'sans-serif';
+            font-size: 10px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .header p {
+            font-size: 12px;
+            margin: 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: right;
+            font-size: 9px;
+            color: #555;
+        }
+
+        .text-capitalize {
+            text-transform: capitalize;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Laporan Transaksi Barang</h1>
+        @if(isset($start) && isset($end))
+        <p>Periode: {{ date('d M Y', strtotime($start)) }} - {{ date('d M Y', strtotime($end)) }}</p>
+        @endif
+        @if(isset($jenis_transaksi) && $jenis_transaksi)
+        <p>Jenis Transaksi: <span class="text-capitalize">{{ $jenis_transaksi }}</span></p>
+        @endif
     </div>
-    <button class="no-print bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow mb-4" onclick="window.print()">Cetak PDF</button>
-    <table class="w-full border border-gray-300 mt-5">
+
+    <table>
         <thead>
-            <tr class="bg-gray-100">
-                <th class="border border-gray-300 px-4 py-2 text-left">No</th>
-                <th class="border border-gray-300 px-4 py-2 text-left">Nama</th>
-                <th class="border border-gray-300 px-4 py-2 text-left">Deskripsi</th>
+            <tr>
+                <th>No</th>
+                <th>Tanggal</th>
+                <th>Kode Barang</th>
+                <th>Nama Barang</th>
+                <th>Jenis Transaksi</th>
+                <th>Jumlah</th>
+                <th>Unit</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($barang as $i => $item)
+            @forelse($barang as $index => $item)
             <tr>
-                <td class="border border-gray-300 px-4 py-2">{{ $i+1 }}</td>
-                <td class="border border-gray-300 px-4 py-2">{{ $item->nama }}</td>
-                <td class="border border-gray-300 px-4 py-2">{{ $item->deskripsi }}</td>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ date('d-m-Y H:i', strtotime($item->created_at)) }}</td>
+                <td>{{ $item->kode_barang }}</td>
+                <td>{{ $item->nama_barang }}</td>
+                <td class="text-capitalize">{{ $item->jenis_transaksi }}</td>
+                <td>{{ $item->jumlah }}</td>
+                <td>{{ $item->unit_barang }}</td>
             </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="7" style="text-align: center;">Tidak ada data untuk periode yang dipilih.</td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
-    <div class="footer mt-10 text-right">
-        <p class="text-gray-500">Tanggal Cetak: {{ date('d-m-Y') }}</p>
-    </div>
-</body>
-</html>
 
+    <div class="footer">
+        <p>Dicetak pada: {{ date('d-m-Y H:i:s') }}</p>
+    </div>
+
+</body>
+
+</html>

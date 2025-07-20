@@ -55,7 +55,7 @@
                             <th class="p-4 text-center text-sm uppercase font-semibold">Nama Barang</th>
                             <th class="p-4 text-center text-sm uppercase font-semibold">Kategori Barang</th>
                             <th class="p-4 text-center text-sm uppercase font-semibold">Jenis Barang</th>
-                            <th class="p-4 text-center text-sm uppercase font-semibold rounded-tr-lg">Unit</th>
+                            <th class="p-4 text-center text-sm uppercase font-semibold">Unit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,7 +70,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" class="p-6 text-center text-gray-500 italic">Tidak ada data barang.</td>
+                            <td colspan="7" class="p-6 text-center text-gray-500 italic">Tidak ada data barang.</td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -80,16 +80,10 @@
     </div>
 </div>
 
+<!-- Modal Tambah Barang -->
 <div id="modaltambahbarang" tabindex="-1" aria-hidden="true"
     class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50 transition-opacity duration-300 ease-out">
-    <div class="relative p-4 w-full max-w-2xl transform transition-transform duration-300 ease-out scale-95 opacity-0"
-        x-data="{ showModal: false }" x-init="setTimeout(() => { showModal = true; $el.classList.add('scale-100', 'opacity-100'); }, 50)"
-        x-transition:enter="ease-out duration-300"
-        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-        x-transition:leave="ease-in duration-200"
-        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+    <div class="relative p-4 w-full max-w-2xl">
         <div class="bg-white rounded-lg shadow-xl">
             <div class="flex items-center justify-between p-5 border-b border-gray-200">
                 <h3 class="text-2xl font-semibold text-gray-900">Tambah Barang Baru</h3>
@@ -101,7 +95,9 @@
                     <span class="sr-only">Close modal</span>
                 </button>
             </div>
-            <form action="{{ route('masterbarang.tambahbaru') }}" method="POST" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Form Action Diperbaiki di sini -->
+            <form action="{{ route('masterbarang.store') }}" method="POST" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                 @csrf
                 <div>
                     <label for="kode_barang" class="block mb-2 text-sm font-medium text-gray-700">Kode Barang</label>
@@ -113,7 +109,6 @@
                     <input type="text" name="nama_barang" id="nama_barang" required
                         class="w-full border border-green-700 p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition duration-150 ease-in-out" />
                 </div>
-                <!-- jenis barang -->
                 <div class="md:col-span-2">
                     <label for="jenis_barang" class="block mb-2 text-sm font-medium text-gray-700">Jenis Barang</label>
                     <select name="jenis_barang" id="jenis_barang" required
@@ -137,7 +132,6 @@
                         <option value="box">Box</option>
                     </select>
                 </div>
-                <!-- kategori barang dan stok -->
                 <div class="md:col-span-2">
                     <label for="kategori_barang" class="block mb-2 text-sm font-medium text-gray-700">Kategori Barang</label>
                     <select name="kategori_barang" id="kategori_barang" required
@@ -171,7 +165,7 @@
     </div>
 </div>
 
-{{-- Script for Alpine.js to handle modal transitions if you choose to use it --}}
+{{-- Script for Alpine.js, bisa dihapus jika tidak digunakan secara ekstensif --}}
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
 
 @endsection

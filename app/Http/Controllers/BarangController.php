@@ -241,6 +241,27 @@ class BarangController extends Controller
         return redirect()->back()->with('success', 'Barang berhasil dihapus.');
     }
 
+    public function destroyBarangKeluar($id)
+    {
+        // 1. Cari data di tabel 'keluar' berdasarkan ID. Jika tidak ketemu, tampilkan error.
+        $keluar = \App\Models\Keluar::findOrFail($id);
+
+        // 2. Cari barang master yang terkait dengan transaksi ini.
+        $barang = \App\Models\BarangModel::find($keluar->barang_id);
+
+        // 3. Jika barang masternya ada, tambahkan kembali stok yang sebelumnya keluar.
+        if ($barang) {
+            $barang->stok_barang += $keluar->jumlah_keluar;
+            $barang->save();
+        }
+
+        // 4. Hapus data transaksi dari tabel 'keluar'.
+        $keluar->delete();
+
+        // 5. Kembali ke halaman barang mentah keluar dengan pesan sukses.
+        return redirect()->route('barangmentahkeluar')->with('success', 'Histori barang keluar berhasil dihapus.');
+    }
+
 
     // Menampilkan halaman stok opname
     public function stokopname(Request $request = null)
@@ -329,7 +350,7 @@ class BarangController extends Controller
             $barang->save();
         }
         $histori->delete();
-        return redirect()->route('homebarangmasuk')->with('success', 'Histori barang masuk berhasil dihapus dan stok barang diperbarui.');
+        return redirect()->route('barangmentahmasuk')->with('success', 'Histori barang masuk berhasil dihapus dan stok barang diperbarui.');
     }
 
     public function apiGetAllBarang()
@@ -341,7 +362,7 @@ class BarangController extends Controller
         ]);
     }
 
-/*stokbarang kepala*/
+    /*stokbarang kepala*/
     public function stokBarangKepala()
     {
         $barang = BarangModel::all();
@@ -350,7 +371,7 @@ class BarangController extends Controller
     public function laporanBarangKepala()
     {
         $barang = BarangModel::all();
-        return view('laporanbarangkepala', compact('barang'));  
+        return view('laporanbarangkepala', compact('barang'));
     }
 
     // API untuk menampilkan data barang berdasarkan kode
@@ -509,7 +530,7 @@ class BarangController extends Controller
         // Kurangi stok barang
         $barang->stok_barang -= $request->jumlah_keluar;
         $barang->status_barang = $barang->stok_barang > 0 ? 'Tersedia' : 'Tidak Tersedia';
-        $barang->save();    
+        $barang->save();
 
         return redirect()->route('barangmentahkeluar')->with('success', 'Barang keluar berhasil dicatat dan stok diperbarui.');
     }
@@ -544,6 +565,28 @@ class BarangController extends Controller
             'status' => 'success',
             'message' => 'Stok barang berhasil diupdate',
             'data' => $barang
+        ]);
+    }
+
+    public function apiGetBarangMentah()
+    {
+        // Mengambil data barang dimana 'jenis_barang' adalah 'mentah',
+        // dengan menghapus spasi di awal/akhir kolom untuk memastikan kecocokan.
+        $barangMentah = \App\Models\BarangModel::whereRaw('TRIM(jenis_barang) = ?', ['mentah'])->get();
+
+        // Jika tidak ada data yang ditemukan, kembalikan pesan yang sesuai.
+        if ($barangMentah->isEmpty()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data barang mentah tidak ditemukan.',
+                'data' => []
+            ]);
+        }
+
+        // Mengembalikan data dalam format JSON jika ditemukan.
+        return response()->json([
+            'status' => 'success',
+            'data' => $barangMentah
         ]);
     }
 }

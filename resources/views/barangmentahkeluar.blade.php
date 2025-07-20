@@ -23,7 +23,7 @@
 
         <div class="overflow-x-auto bg-white rounded-lg shadow mt-6">
             <table class="min-w-full w-full text-gray-700">
-                <thead class="bg-green-900 text-white"> {{-- Warna header diubah untuk membedakan --}}
+                <thead class="bg-green-900 text-white"> 
                     <tr>
                         <th class="p-4 text-center text-sm uppercase">No</th>
                         <th class="p-4 text-center text-sm uppercase">Tanggal</th>
@@ -31,7 +31,7 @@
                         <th class="p-4 text-center text-sm uppercase">Nama Barang</th>
                         <th class="p-4 text-center text-sm uppercase">Kategori</th>
                         <th class="p-4 text-center text-sm uppercase">Unit</th>
-                        <th class="p-4 text-center text-sm uppercase">Jumlah Keluar</th> {{-- Diubah ke Jumlah Keluar --}}
+                        <th class="p-4 text-center text-sm uppercase">Jumlah Keluar</th>
                         <th class="p-4 text-center text-sm uppercase">User</th>
                         <th class="p-4 text-center text-sm uppercase">Keterangan</th>
                         <th class="p-4 text-center text-sm uppercase">Aksi</th>
@@ -50,15 +50,16 @@
                         <td class="p-4 text-center">{{ $item->user->username ?? '-' }}</td>
                         <td class="p-4 text-center">{{ $item->keterangan ?? '-' }}</td>
                         <td class="p-4 text-center">
-                            <form action="{{ route('histori.destroy', $item->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus histori ini?');">
+                            <form action="{{ route('barangmentahkeluar.destroy', $item->id) }}" method="POST" class="inline" onsubmit="return confirm('Anda yakin ingin menghapus histori ini? Stok barang akan dikembalikan.');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-800">
+                                <button type="submit" class="text-red-600 hover:text-red-800" title="Hapus Histori">
                                     <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5.25 0C4.2875 0 3.5 0.7875 3.5 1.75H1.75C0.7875 1.75 0 2.5375 0 3.5H12.25C12.25 2.5375 11.4625 1.75 10.5 1.75H8.75C8.75 0.7875 7.9625 0 7 0H5.25ZM1.75 5.25V13.6675C1.75 13.86 1.89 14 2.0825 14H10.185C10.3775 14 10.5175 13.86 10.5175 13.6675V5.25H8.7675V11.375C8.7675 11.865 8.3825 12.25 7.8925 12.25C7.4025 12.25 7.0175 11.865 7.0175 11.375V5.25H5.2675V11.375C5.2675 11.865 4.8825 12.25 4.3925 12.25C3.9025 12.25 3.5175 11.865 3.5175 11.375V5.25H1.7675H1.75Z" fill="#B30000" /> {{-- Warna icon dihapus diubah --}}
+                                        <path d="M5.25 0C4.2875 0 3.5 0.7875 3.5 1.75H1.75C0.7875 1.75 0 2.5375 0 3.5H12.25C12.25 2.5375 11.4625 1.75 10.5 1.75H8.75C8.75 0.7875 7.9625 0 7 0H5.25ZM1.75 5.25V13.6675C1.75 13.86 1.89 14 2.0825 14H10.185C10.3775 14 10.5175 13.86 10.5175 13.6675V5.25H8.7675V11.375C8.7675 11.865 8.3825 12.25 7.8925 12.25C7.4025 12.25 7.0175 11.865 7.0175 11.375V5.25H5.2675V11.375C5.2675 11.865 4.8825 12.25 4.3925 12.25C3.9025 12.25 3.5175 11.865 3.5175 11.375V5.25H1.7675H1.75Z" fill="#B30000" />
                                     </svg>
                                 </button>
                             </form>
+
                         </td>
                     </tr>
                     @endforeach

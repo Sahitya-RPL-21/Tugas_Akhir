@@ -9,42 +9,7 @@
 <div class="min-h-screen bg-gray-100 p-6">
 	<h1 class="text-4xl font-bold mb-8 text-gray-800">Beranda</h1>
 
-	<!-- <div class="flex justify-end items-center space-x-4 mb-8">
-		<a href="{{ route('homebarangmasuk') }}" class="py-2.5 px-5 bg-[#173720] text-white rounded-lg hover:bg-green-700 transition">
-			Cek Stok</a>
-		<a href="{{ route('barang.mentah') }}" class="py-2.5 px-5 bg-[#173720] text-white rounded-lg hover:bg-green-700 transition">
-			Barang Mentah</a>
-	</div> -->
-
-	<!-- Modal Tambah Barang -->
-	<!-- <div id="tambahBarangModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-		<div class="bg-white rounded-lg shadow-lg w-96 p-6">
-			<h2 class="text-xl font-bold mb-4 text-gray-800">Tambah Barang Jadi</h2>
-			<form action="{{ route('barangjadi.inventory') }}" method="POST">
-				@csrf
-				<div class=" mb-4">
-					<label for="nama_barang" class="block text-sm font-medium text-gray-700">Nama Barang</label>
-					<input list="namabarang" type="text" id="nama_barang" name="nama_barang" class="w-full border border-gray-300 p-2 rounded" required>
-					<datalist id="namabarang">
-						@foreach ($barang as $item)
-						<option value="{{ $item->nama_barang }}">{{ $item->nama_barang }}</option>
-						@endforeach
-					</datalist>
-				</div>
-				<div class=" mb-4">
-					<label for="stok_barang" class="block text-sm font-medium text-gray-700">Jumlah</label>
-					<input type="number" id="stok_barang" name="stok_barang" class="w-full border border-gray-300 p-2 rounded" required>
-				</div>
-				<div class="flex justify-end space-x-4">
-					<button type="button" onclick="toggleModal()" class="py-2 px-4 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">Batal</button>
-					<button type="submit" class="py-2 px-4 bg-[#173720] text-white rounded-lg hover:bg-green-700 transition">Simpan</button>
-				</div>
-			</form>
-		</div>
-	</div> -->
-
 	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-
 		<div class="bg-green-900 text-white p-4 rounded-lg flex flex-col justify-between items-center text-center">
 			<div class="mb-2">
 				<svg class="h-16 w-16 text-blue-200 mx-auto" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">

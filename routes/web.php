@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BarangController;
-use App\Http\Controllers\LaporanBarangController;
 use App\Models\User;
+use App\Http\Controllers\LaporanBarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,12 +60,11 @@ Route::delete('/masterbarang/{id}', [BarangController::class, 'destroyMaster'])-
 |--------------------------------------------------------------------------
 */
 Route::get('/homebarangmasuk', [BarangController::class, 'tampilkanbarang'])->name('homebarangmasuk');
-Route::post('/homebarangmasuk/tambah', [BarangController::class, 'tambahbarang'])->name('homebarangmasuk.tambah');
+Route::post('/homebarangmasuk/tambah', [BarangController::class, 'tambahBarangMasuk'])->name('homebarangmasuk.tambah');
 Route::get('/homebarangmasuk/{kode_barang}/hapus', [BarangController::class, 'hapus'])->name('homebarangmasuk.hapus');
 Route::get('/jadi', [BarangController::class, 'tampilkanbarangsearch'])->name('jadi');
 Route::put('/homebarangmasuk/updateStok', [BarangController::class, 'updateBarangJadi'])->name('homebarangmasuk.updateStok');
-// Route::post('/barangjadi/tambah', [BarangController::class, 'tambahBarangJadi'])->name('barangjadi.tambah');
-// Route::put('/barangjadi/{kode_barang}', [BarangController::class, 'update'])->name('barangjadi.update');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -81,8 +80,12 @@ Route::delete('/homebarangkeluar/{id}/hapus', [BarangController::class, 'hapusBa
 | Barang Mentah & Jadi
 |--------------------------------------------------------------------------
 */
-Route::get('/barang-mentah', [BarangController::class, 'barangmentah'])->name('barang.mentah');
-Route::get('/tambahbarang', fn() => view('tambahbarang'))->name('tambahbarang');
+Route::get('/barangmentahmasuk', [BarangController::class, 'barangmentahmasuk'])->name('barangmentahmasuk');
+Route::get('/barangmentah/tambah', [BarangController::class, 'barangMentahTambah'])->name('barangmentah.tambahmasuk');
+Route::post('/barangmentah/tambah', [BarangController::class, 'tambahBarangMentah'])->name('barangmentah.tambah');
+
+Route::get('/barangmentahkeluar', [BarangController::class, 'barangmentahkeluar'])->name('barangmentahkeluar');
+Route::post('/barangmentahkeluar/tambah', [BarangController::class, 'tambahBarangMentahKeluar'])->name('barangmentah.tambahkeluar');
 
 Route::delete('/barangjadi/{id}', [BarangController::class, 'destroy'])->name('barangjadi.destroy');
 /*
@@ -90,12 +93,19 @@ Route::delete('/barangjadi/{id}', [BarangController::class, 'destroy'])->name('b
 | Laporan Barang
 |--------------------------------------------------------------------------
 */
-Route::get('/laporanbarang', fn() => view('laporanbarang'))->name('laporanbarang');
+Route::get('/laporanbarang', [LaporanBarangController::class, 'laporanBarang'])->name('laporanbarang');
 Route::get('/laporan-barang', [LaporanBarangController::class, 'datepicker'])->name('laporanbarang.datepicker');
+Route::get('/laporan-barang/cetak', [LaporanBarangController::class, 'cetak'])->name('laporanbarang.cetak');
+
+/*route halaman stok barang kepala*/
+Route::get('/stokbarangkepala', [BarangController::class, 'stokBarangKepala'])->name('stokbarangkepala');
 
 
+Route::post('/tambahpengguna', [UserController::class, 'tambahpenggunamodal'])->name('tambahpenggunamodal');
+Route::put('/users/{id}', [UserController::class, 'updateAkunPengguna'])->name('user.update');
+Route::delete('/users/{id}', [UserController::class, 'hapusAkunPengguna'])->name('user.destroy');
 
-// API routes (commented out)
+// // API routes (commented out)
 // Route::get('/api/barang', [BarangController::class, 'apiGetAllBarang']);
 // Route::get('/api/barang/{kode_barang}', [BarangController::class, 'apiGetBarangByKode']);
 // Route::put('/api/barang/{kode_barang}/stok', [BarangController::class, 'apiUpdateStok']);

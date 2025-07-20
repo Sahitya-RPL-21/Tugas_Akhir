@@ -17,10 +17,16 @@ return new class extends Migration {
             $table->integer('stok_fisik')->default(0);
             $table->integer('selisih_barang')->default(0);
             $table->text('keterangan')->nullable();
+            // user_id
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
 
-            // Jika ingin relasi ke tabel barang:
-            $table->foreign('kode_barang')->references('kode_barang')->on('barang')->onDelete('cascade');
+            // Jika ingin relasi ke tabel barang use id
+            $table->unsignedBigInteger('barang_id');
+            $table->foreign('barang_id')->references('id')->on('barang')->onDelete('cascade');
+            
         });
     }
 

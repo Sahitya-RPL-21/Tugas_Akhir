@@ -74,12 +74,12 @@
                     <tr class="border-b hover:bg-green-50 transition">
                         <td class="p-4 text-center">{{ $loop->iteration }}</td>
                         <td class="p-4 text-center">{{ $item->created_at->setTimezone('Asia/Jakarta')->format('d-m-Y H:i') }}</td>
-                        <td class="p-4 text-center">{{ $item->barang_id }}</td>
+                        <td class="p-4 text-center">{{ $item->barang->kode_barang }}</td>
                         <td class="p-4 text-center">{{ $item->barang->nama_barang ?? '-' }}</td>
                         <td class="p-4 text-center">{{ $item->barang->kategori_barang ?? '-' }}</td>
                         <td class="p-4 text-center">{{ $item->barang->unit_barang ?? '-' }}</td>
                         <td class="p-4 text-center">{{ $item->jumlah_keluar }}</td>
-                        <td class="p-4 text-center">{{ $item->user->name ?? '-' }}</td>
+                        <td class="p-4 text-center">{{ $item->user->username ?? '-' }}</td>
                         <td class="p-4 text-center">{{ $item->keterangan ?? '-' }}</td>
                         <td class="p-4 text-center">
                             <form action="{{ route('homebarangkeluar.hapus', $item->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus histori ini?');">
@@ -114,11 +114,11 @@
                     <form action="{{ route('homebarangkeluar.tambah') }}" method="POST" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                         @csrf
                         <div class="md:col-span-2">
-                            <label for="kode_barang" class="block mb-1 text-sm font-medium">Pilih Barang</label>
-                            <select name="kode_barang" id="kode_barang" required class="w-full border border-gray-300 p-2 rounded" onchange="updateNamaBarangKeluar()">
+                            <label for="barang_id" class="block mb-1 text-sm font-medium">Pilih Barang</label>
+                            <select name="barang_id" id="barang_id" required class="w-full border border-gray-300 p-2 rounded" onchange="updateNamaBarangKeluar()">
                                 <option value="" disabled selected>Pilih Barang</option>
                                 @foreach($barang as $item)
-                                <option value="{{ $item->kode_barang }}" data-nama="{{ $item->nama_barang }}">{{ $item->kode_barang }} - {{ $item->nama_barang }}</option>
+                                <option value="{{ $item->id }}" data-nama="{{ $item->nama_barang }}">{{ $item->kode_barang }} - {{ $item->nama_barang }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -131,12 +131,8 @@
                             <input type="number" name="jumlah_keluar" id="jumlah_keluar" min="1" required class="w-full border border-gray-300 p-2 rounded" />
                         </div>
                         <div class="md:col-span-2">
-                            <label for="user" class="block mb-1 text-sm font-medium">User</label>
-                            <input type="text" name="user" id="user" value="{{ auth()->user()->name }}" class="w-full border border-gray-300 p-2 rounded bg-gray-100" readonly />
-                        </div>
-                        <div class="md:col-span-2">
                             <label for="keterangan" class="block mb-1 text-sm font-medium">Keterangan</label>
-                            <input type="text" name="keterangan" id="keterangan" class="w-full border border-gray-300 p-2 rounded" />
+                            <textarea name="keterangan" id="keterangan" rows="3" class="w-full border border-gray-300 p-2 rounded"></textarea>
                         </div>
                         <div class="md:col-span-2 flex justify-end gap-2 pt-2">
                             <button type="submit" class="px-4 py-2 text-white bg-green-900 rounded-md hover:bg-green-700">
@@ -152,7 +148,7 @@
         </div>
         <script>
             function updateNamaBarangKeluar() {
-                var select = document.getElementById('kode_barang');
+                var select = document.getElementById('barang_id');
                 var nama = select.options[select.selectedIndex]?.getAttribute('data-nama') || '';
                 document.getElementById('nama_barang_keluar').value = nama;
             }

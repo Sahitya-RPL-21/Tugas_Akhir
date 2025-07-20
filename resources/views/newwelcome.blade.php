@@ -28,6 +28,7 @@
             </div>
             <div class="flex flex-col flex-1 overflow-y-auto">
                 <nav class="flex-1 px-2 py-4 bg-[#173720]">
+                    @if(auth()->user()->role === 'user')
                     <a href="/" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('/') ? 'bg-green-900 font-bold' : '' }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M22 22V10L12 2L2 10V22H8V13H16V22H22Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
@@ -35,6 +36,9 @@
                         </svg>
                         Beranda
                     </a>
+                    @endif
+
+                    @if(auth()->user()->role === 'user')
                     <a href="/masterbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('masterbarang') ? 'bg-green-900 font-bold' : '' }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3 5H21V19H3V5Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
@@ -43,6 +47,8 @@
                         </svg>
                         Master Barang
                     </a>
+                    @endif
+                    @if(auth()->user()->role === 'user'|| auth()->user()->role === 'kepala')
                     <a href="/stokbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('stokbarang*') ? 'bg-green-900 font-bold' : '' }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="4" y="4" width="16" height="16" rx="2" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
@@ -50,6 +56,8 @@
                         </svg>
                         Stok Barang
                     </a>
+                    @endif
+                    @if(auth()->user()->role === 'user')
                     <a href="/stokopname" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('stokopname*') ? 'bg-green-900 font-bold' : '' }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="3" y="3" width="18" height="18" rx="2" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
@@ -73,9 +81,12 @@
                         </svg>
                         Barang Keluar
                     </a>
+                    @endif
+
+                    @if(auth()->user()->role === 'user' || auth()->user()->role === 'kepala')
                     <a href="/laporanbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('laporanbarang*') ? 'bg-green-900 font-bold' : '' }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="MS16 3H11V21H16V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M16 3H11V21H16V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
                             <path d="M21 3H16V21H21V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
                             <path d="M5 3L9 3.5L7.25 21L3 20.5L5 3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
                             <path d="M18.5 9V7.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -83,28 +94,34 @@
                         </svg>
                         Laporan Barang
                     </a>
+                    @endif
+
+                    @if(auth()->user()->role === 'user')
+                    <a href="/barangmentahmasuk" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('barangmentahmasuk*') ? 'bg-green-900 font-bold' : '' }}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3H21V21H3V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M7 7H17V17H7V7Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M10 10H14V14H10V10Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                        </svg>
+                        Barang Mentah Masuk
+                    </a>
+                    <a href="/barangmentahkeluar" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('barangmentahkeluar*') ? 'bg-green-900 font-bold' : '' }}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3H21V21H3V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M7 7H17V17H7V7Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M10 10H14V14H10V10Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                        </svg>
+                        Barang Mentah Keluar
+                    </a>
+                    @endif
                     <div class="mb-2 relative group">
-                        @auth
                         @if(auth()->user()->role === 'admin')
-                        <a href="/tambahuser" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
+                        <a href="/homeadmin" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M4 20C4 16.6863 7.58172 14 12 14C16.4183 14 20 16.6863 20 20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M16 8H20M18 6V10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M22 22V10L12 2L2 10V22H8V13H16V22H22Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                                <path d="M12 22V17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            Tambah User
-                        </a>
-                        @endif
-                        @endauth
-                        @if (Request::is('kepala*'))
-                        <a href="/kepala" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left 
-                        {{ Request::is('kepala*') ? 'bg-green-900' : '' }} text-gray-100 hover:bg-green-900 group">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 3H21V21H3V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-                                <path d="M7 7H17V17H7V7Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-                                <path d="M10 10H14V14H10V10Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-                            </svg>
-                            Data Penjualan
+                            Beranda
                         </a>
                         @endif
                     </div>
@@ -120,7 +137,6 @@
         </div>
 
         <div class="flex flex-col flex-1 overflow-y-auto">
-            <!-- header -->
             <div class="flex items-center justify-between h-16 bg-white border-b border-gray-200">
                 <div class="flex items-center px-4 py-6">
                     <label for="menu-toggle"
@@ -133,7 +149,7 @@
                     </label>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="text-sm font-bold text-gray-700 pr-8">@yield('page_title', 'SUPERADMIN')</span>
+                    <span class="text-sm font-bold text-gray-700 pr-8">{{ auth()->user()->username }}</span>
                 </div>
             </div>
             <section>
@@ -141,7 +157,6 @@
             </section>
         </div>
     </div>
-    <!-- Modal Log Out -->
     <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 text-center">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Konfirmasi Logout</h2>

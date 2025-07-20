@@ -24,7 +24,7 @@ class UserController extends Controller
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('homeadmin')->with('message', 'Login successful');
             } elseif (Auth::user()->role === 'kepala') {
-                return redirect()->route('kepala')->with('message', 'Login successful');
+                return redirect()->route('stokbarang')->with('message', 'Login successful');
             }
             return redirect()->route('home')->with('message', 'Login successful');
         }
@@ -54,5 +54,40 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('homeadmin')->with('success', 'Registration successful');
+    }
+    public function updateAkunPengguna(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'role' => 'required',
+        ]);
+
+        // Cek apakah username sudah ada
+        if (User::where('username', $request->username)->where('id', '!=', $id)->exists()) {
+            return back()->withErrors(['username' => 'Username sudah digunakan.'])->withInput();
+        }
+
+        $user->update([
+            'username' => $request->username,
+            'role' => $request->role,
+        ]);
+
+        return redirect()->route('homeadmin')->with('success', 'Akun pengguna berhasil diperbarui');
+    }
+    
+    // Fungsi untuk menampilkan modal tambah pengguna (jika menggunakan AJAX/modal)
+    public function tambahpenggunamodal()
+    {
+        return view('tambahpenggunamodal');
+    }
+
+    public function hapusAkunPengguna($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('homeadmin')->with('success', 'Akun pengguna berhasil dihapus');
     }
 }

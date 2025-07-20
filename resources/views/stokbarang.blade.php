@@ -37,46 +37,67 @@
                             <option value="KancingLubang4">Kancing 4 Lubang</option>
                             <option value="RendaSilang">Renda Silang</option>
                             <option value="Pita">Pita 1/4</option>
+                            <option value="AtasanSMPLaki-Laki">Atasan SMP Laki-Laki</option>
+                            <option value="AtasanSMPPerempuan">Atasan SMP Perempuan</option>
+                            <option value="BawahanSMPLaki-Laki">Bawahan SMP Laki-Laki</option>
+                            <option value="BawahanSMPPerempuan">Bawahan SMP Perempuan</option>
+                            <option value="AtasanSMALaki-Laki">Atasan SMA Laki-Laki</option>
+                            <option value="AtasanSMAPerempuan">Atasan SMA Perempuan</option>
+                            <option value="BawahanSMALaki-Laki">Bawahan SMA Laki-Laki</option>
+                            <option value="BawahanSMAPerempuan">Bawahan SMA Perempuan</option>
                         </select>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="overflow-x-auto bg-white rounded-lg shadow mt-6">
+        <div class="overflow-x-auto bg-white rounded-xl shadow-lg">
             <table class="min-w-full w-full text-gray-700">
                 <thead class="bg-[#173720] text-white">
                     <tr>
-                        <th class="p-4 text-center text-sm uppercase">No</th>
-                        <th class="p-4 text-center text-sm uppercase">Kode Barang</th>
-                        <th class="p-4 text-center text-sm uppercase">Nama Barang</th>
-                        <th class="p-4 text-center text-sm uppercase">Kategori</th>
-                        <th class="p-4 text-center text-sm uppercase">Unit</th>
-                        <th class="p-4 text-center text-sm uppercase">Stok</th>`
-                        <th class="p-4 text-center text-sm uppercase">Keterangan</th>
-                        <th class="p-4 text-center text-sm uppercase">User</th>
-                        <th class="p-4 text-center text-sm uppercase">Aksi</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold rounded-tl-xl">No</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">Kode Barang</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">Nama Barang</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">Kategori</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">Unit</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">Stok</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">User</th>
+                        @if(auth()->user()->role === 'user')
+                        <th class="p-4 text-center text-sm uppercase font-semibold rounded-tr-xl">Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($barang as $item)
-                    <tr class="border-b hover:bg-green-50 transition">
+                    <tr class="border-b border-gray-100 hover:bg-green-50 transition-colors duration-150">
                         <td class="p-4 text-center">{{ $loop->iteration }}</td>
-                        <td class="p-4 text-center">{{$item->kode_barang }}</td>
+                        <td class="p-4 text-center font-medium text-gray-800">{{$item->kode_barang }}</td>
                         <td class="p-4 text-center">{{$item->nama_barang}}</td>
                         <td class="p-4 text-center">{{$item->kategori_barang}}</td>
                         <td class="p-4 text-center">{{$item->unit_barang}}</td>
-                        <td class="p-4 text-center">{{$item->stok_barang}}</td>
-                        {{-- filepath: resources\views\stokbarang.blade.php --}}
+                        <td class="p-4 text-center">
+                            <span class="font-bold text-lg {{ $item->stok_barang <= 50 ? 'text-red-600' : 'text-green-700' }}">
+                                {{ $item->stok_barang }}
+                            </span>
+                        </td>
+                        <td class="p-4 text-center">
+                            {{-- Pastikan relasi 'user' didefinisikan di model Barang Anda --}}
+                            @if($item->user)
+                            {{ $item->user->username }}
+                            @else
+                            <span class="text-gray-500 italic">N/A</span>
+                            @endif
+                        </td>
+                        @if(auth()->user()->role === 'user')
                         <td class="p-4 text-center" x-data="{ open: false }">
-                            <!-- Tombol Edit -->
+                            {{-- Tombol Edit --}}
                             <button
                                 @click="open = true"
-                                class="text-blue-600 hover:text-blue-800 mr-2 flex items-center gap-1"
-                                type="button">
-                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10.5 0L8.75 1.75L12.25 5.25L14 3.5L10.5 0ZM7 3.5L0 10.5V14H3.5L10.5 7L7 3.5Z" fill="#123524" />
+                                class="inline-flex items-center justify-center p-2 rounded-full text-green-600 hover:bg-green-100 hover:text-green-800 transition-colors duration-200" {{-- Adjusted color to match screenshot's green edit icon --}}
+                                type="button"
+                                title="Edit Barang">
+                                <svg class="w-5 h-5" viewBox="0 0 14 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.5 0L8.75 1.75L12.25 5.25L14 3.5L10.5 0ZM7 3.5L0 10.5V14H3.5L10.5 7L7 3.5Z" />
                                 </svg>
-
                             </button>
 
                             <!-- Modal Edit Nama Barang -->
@@ -88,9 +109,9 @@
                                 <div class="bg-black bg-opacity-40 absolute inset-0"></div>
                                 <div class="bg-white rounded-lg shadow-lg p-6 z-10 w-full max-w-md">
                                     <h2 class="text-xl font-bold mb-4">Edit Nama Barang</h2>
-                                    <form method="POST" action="{{ route('barang.updateNama', $item->id) }}">
+                                    <form method="POST" action="{{ route('stokbarang.update', $item->id) }}">
                                         @csrf
-                                        @method('PATCH')
+                                        @method('PUT')
                                         <div class="mb-4">
                                             <label class="block text-gray-700 mb-2">Nama Barang</label>
                                             <input
@@ -108,6 +129,7 @@
                                 </div>
                             </div>
                         </td>
+                        @endif
                         @empty
                     <tr>
                         <td colspan="8" class="p-4 text-center text-gray-500">Tidak ada data barang.</td>

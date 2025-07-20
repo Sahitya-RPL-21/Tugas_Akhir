@@ -7,7 +7,7 @@
 <div class="p-6">
     <div class="max-w-7xl mx-auto p-6">
         <h1 class="text-4xl font-bold mb-8 text-gray-800">Laporan Barang</h1>
-        <form method="GET" action="{{ route('laporanbarang') }}" class="flex items-center mb-6 gap-4">
+        <form method="GET" action="{{ route('laporanbarang.cetak') }}" class="flex items-center mb-6 gap-4">
             <div class="relative">
                 <input id="datepicker-range-start" name="start" type="date"
                     value="{{ request('start') }}"
@@ -22,7 +22,8 @@
             <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded-lg">Filter</button>
         </form>
 
-        <div class="flex justify-between items-center mb-4"> {{-- Reduced mb from 6 to 4 or even 0 to bring closer to table --}}
+        <div class="flex justify-between items-center mb-4"> 
+            @if(auth()->user()->role === 'user')
             <div class="">
                 <label for="jenis_transaksi" class="mr-2 font-semibold text-gray-700">Jenis Laporan:</label>
                 <select id="jenis_transaksi" name="jenis_transaksi" class="border border-gray-300 rounded-lg p-2.5"
@@ -32,6 +33,7 @@
                     <option value="keluar" {{ request('jenis_transaksi') == 'keluar' ? 'selected' : '' }}>Barang Keluar</option>
                 </select>
             </div>
+            @endif
 
             <div class="">
                 <button onclick="window.print()" class="bg-[#173720] hover:bg-green-800 text-white font-semibold py-2 px-5 rounded-lg shadow-md">
@@ -58,33 +60,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- Contoh data statis tanpa database --}}
+                    @forelse($barang as $index => $item)
                     <tr class="border-b border-gray-200">
-                        <td class="py-2 px-4">1</td>
-                        <td class="py-2 px-4">01-06-2024</td>
-                        <td class="py-2 px-4">BRG001</td>
-                        <td class="py-2 px-4">Celana SMK</td>
-                        <td class="py-2 px-4">100</td>
-                        <td class="py-2 px-4">pcs</td>
+                        <td class="py-2 px-4">{{ $index + 1 }}</td>
+                        <td class="py-2 px-4">{{ $item->created_at}}</td>
+                        <td class="py-2 px-4">{{ $item->kode_barang }}</td>
+                        <td class="py-2 px-4">{{ $item->nama_barang }}</td>
+                        <td class="py-2 px-4">{{ $item->stok_barang}}</td>
+                        <td class="py-2 px-4">{{ $item->unit_barang }}</td>
                     </tr>
-                    <tr class="border-b border-gray-200">
-                        <td class="py-2 px-4">2</td>
-                        <td class="py-2 px-4">02-06-2024</td>
-                        <td class="py-2 px-4">BRG002</td>
-                        <td class="py-2 px-4">Baju SMP</td>
-                        <td class="py-2 px-4">10</td>
-                        <td class="py-2 px-4">pcs</td>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="py-4 px-4 text-center text-gray-500">Tidak ada data laporan barang</td>
                     </tr>
-                    <tr class="border-b border-gray-200">
-                        <td class="py-2 px-4">3</td>
-                        <td class="py-2 px-4">03-06-2024</td>
-                        <td class="py-2 px-4">BRG003</td>
-                        <td class="py-2 px-4">Sabuk</td>
-                        <td class="py-2 px-4">50</td>
-                        <td class="py-2 px-4">Pcs</td>
-                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
-
-        @endsection
+    </div>
+@endsection

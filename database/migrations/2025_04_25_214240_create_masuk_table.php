@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('masuk', function (Blueprint $table) {
             $table->id();
-            $table->string('barang_id');
-            $table->foreign('barang_id')->references('kodez_barang')->on('barang')->onDelete('cascade');
+            $table->unsignedBigInteger('barang_id');
+            $table->foreign('barang_id')->references('id')->on('barang')->onDelete('cascade');
             $table->integer('jumlah_masuk');
+            // keterangan
+            $table->string('keterangan')->nullable();
+            // user_id
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

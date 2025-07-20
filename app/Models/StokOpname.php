@@ -12,7 +12,7 @@ class StokOpname extends Model
     protected $table = 'stok_opname';
 
     protected $fillable = [
-        'kode_barang',
+        'barang_id',
         'stok_awal',
         'stok_fisik',
         'selisih_barang',
@@ -23,6 +23,12 @@ class StokOpname extends Model
     // Jika ingin relasi ke model BarangModel:
     public function barang()
     {
-        return $this->belongsTo(BarangModel::class, 'kode_barang', 'kode_barang');
+        return $this->belongsTo(BarangModel::class, 'barang_id', 'id');
+    }
+
+    // Relasi ke model User
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

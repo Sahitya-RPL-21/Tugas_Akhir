@@ -12,13 +12,19 @@ class BarangModel extends Model
     protected $keyType = 'string';
     protected $fillable = [
         'kode_barang',
-        'created_at',
-        'updated_at',
         'nama_barang',
+        'jenis_barang',
         'kategori_barang',
         'unit_barang',
         'stok_barang',
         'status_barang',
-        'user_id'
+        'user_id',
+        'updated_at',
+        'created_at'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

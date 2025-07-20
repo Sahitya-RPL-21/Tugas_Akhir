@@ -1,76 +1,61 @@
 <?php
 
-namespace App\Http\Controllers;
-
+use App\Models\BarangModel;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf; // Import the PDF facade
+use Illuminate\Routing\Controller as BaseController;
 
-class LaporanBarangController extends Controller
+class LaporanBarangController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function datepicker(Request $request)
+    public function laporanBarang(Request $request)
     {
-        $query = \App\Models\BarangModel::query();
-    
-        // Filter berdasarkan tanggal masuk (atau sesuaikan dengan field tanggal di tabel Anda)
-        if ($request->filled('start') && $request->filled('end')) {
-            $query->whereBetween('created_at', [
-                $request->start . ' 00:00:00',
-                $request->end . ' 23:59:59'
-            ]);
-    }
-    
-        $barangs = $query->get();
-    
-        return view('laporanbarang', compact('barangs'));
+        $start = $request->input('start');
+        $end = $request->input('end');
+        $jenis_transaksi = $request->input('jenis_transaksi');
+
+        $barang = BarangModel::query();
+
+        if ($start && $end) {
+            $barang->whereBetween('created_at', [$start, $end]);
+        }
+
+        if ($jenis_transaksi) {
+            if ($jenis_transaksi == 'masuk') {
+                $barang->where('jenis_transaksi', 'masuk');
+            } elseif ($jenis_transaksi == 'keluar') {
+                $barang->where('jenis_transaksi', 'keluar');
+            }
+        }
+
+        $barang = $barang->get();
+
+        return view('laporanbarang', compact('barang'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function cetak(Request $request)
     {
-        //
-    }
+        $start = $request->input('start');
+        $end = $request->input('end');
+        $jenis_transaksi = $request->input('jenis_transaksi');
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $barang = BarangModel::query();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        if ($start && $end) {
+            $barang->whereBetween('created_at', [$start, $end]);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        if ($jenis_transaksi) {
+            if ($jenis_transaksi == 'masuk') {
+                $barang->where('jenis_transaksi', 'masuk');
+            } elseif ($jenis_transaksi == 'keluar') {
+                $barang->where('jenis_transaksi', 'keluar');
+            }
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $barang = $barang->get();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $pdf = Pdf::loadView('cetak', compact('barang', 'start', 'end', 'jenis_transaksi'));
+
+        return $pdf->download('laporan_barang.pdf');
     }
 }

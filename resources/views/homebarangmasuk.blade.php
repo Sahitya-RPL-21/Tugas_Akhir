@@ -75,12 +75,12 @@
                     <tr class="border-b hover:bg-green-50 transition">
                         <td class="p-4 text-center">{{ $loop->iteration }}</td>
                         <td class="p-4 text-center">{{ $item->created_at->setTimezone('Asia/Jakarta')->format('d-m-Y H:i') }}</td>
-                        <td class="p-4 text-center">{{ $item->barang_id }}</td>
+                        <td class="p-4 text-center">{{ $item->barang->kode_barang }}</td>
                         <td class="p-4 text-center">{{ $item->barang->nama_barang ?? '-' }}</td>
                         <td class="p-4 text-center">{{ $item->barang->kategori_barang ?? '-' }}</td>
                         <td class="p-4 text-center">{{ $item->barang->unit_barang ?? '-' }}</td>
                         <td class="p-4 text-center">{{ $item->jumlah_masuk }}</td>
-                        <td class="p-4 text-center">{{ $item->user->name ?? '-' }}</td>
+                        <td class="p-4 text-center">{{ $item->user->username ?? '-' }}</td>
                         <td class="p-4 text-center">{{ $item->keterangan ?? '-' }}</td>
                         <td class="p-4 text-center">
                             <form action="{{ route('histori.destroy', $item->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus histori ini?');">
@@ -115,11 +115,11 @@
                     <form action="{{ route('homebarangmasuk.tambah') }}" method="POST" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                         @csrf
                         <div class="md:col-span-2">
-                            <label for="kode_barang" class="block mb-1 text-sm font-medium">Pilih Barang</label>
-                            <select name="kode_barang" id="kode_barang" required class="w-full border border-gray-300 p-2 rounded" onchange="updateNamaBarang()">
+                            <label for="barang_id" class="block mb-1 text-sm font-medium">Pilih Barang</label>
+                            <select name="barang_id" id="barang_id" required class="w-full border border-gray-300 p-2 rounded" onchange="updateNamaBarang()">
                                 <option value="" disabled selected>Pilih Barang</option>
                                 @foreach($barang as $item)
-                                <option value="{{ $item->kode_barang }}" data-nama="{{ $item->nama_barang }}">{{ $item->kode_barang }} - {{ $item->nama_barang }}</option>
+                                <option value="{{ $item->id }}" data-nama="{{ $item->nama_barang }}">{{ $item->kode_barang }} - {{ $item->nama_barang }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -128,8 +128,13 @@
                             <input type="text" name="nama_barang" id="nama_barang" required class="w-full border border-gray-300 p-2 rounded bg-gray-100" readonly />
                         </div>
                         <div class="md:col-span-2">
-                            <label for="stok_barang" class="block mb-1 text-sm font-medium">Jumlah Barang</label>
-                            <input type="number" name="stok_barang" id="stok_barang" min="1" required class="w-full border border-gray-300 p-2 rounded" />
+                            <label for="jumlah_masuk" class="block mb-1 text-sm font-medium">Jumlah Barang</label>
+                            <input type="number" name="jumlah_masuk" id="jumlah_masuk" min="1" required class="w-full border border-gray-300 p-2 rounded" />
+                        </div>
+                        <!-- keterangan -->
+                        <div class="md:col-span-2">
+                            <label for="keterangan" class="block mb-1 text-sm font-medium">Keterangan</label>
+                            <textarea name="keterangan" id="keterangan" rows="3" class="w-full border border-gray-300 p-2 rounded"></textarea>
                         </div>
                         <div class="md:col-span-2 flex justify-end gap-2 pt-2">
                             <button type="submit" class="px-4 py-2 text-white bg-green-900 rounded-md hover:bg-green-700">
@@ -145,62 +150,11 @@
         </div>
         <script>
             function updateNamaBarang() {
-                var select = document.getElementById('kode_barang');
+                var select = document.getElementById('barang_id');
                 var nama = select.options[select.selectedIndex]?.getAttribute('data-nama') || '';
                 document.getElementById('nama_barang').value = nama;
             }
         </script>
-
-        <!-- Modal Tambah Barang Jadi -->
-        <div id="modaltambahbarang" tabindex="-1" aria-hidden="true"
-            class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
-            <div class="relative p-4 w-full max-w-4xl">
-                <div class="bg-white rounded-lg shadow-sm">
-                    <div class="flex items-center justify-between p-4 border-b">
-                        <h3 class="text-xl font-semibold text-gray-900">Tambah Barang Jadi</h3>
-                        <button type="button" onclick="document.getElementById('modaltambahbarang').classList.add('hidden')" class="text-gray-400 hover:text-gray-900 hover:bg-gray-200 rounded-lg text-sm p-2.5 inline-flex items-center">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <form action="{{ route('homebarangmasuk.updateStok') }}" method="POST" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        @csrf
-                        @method('PUT')
-                        <div>
-                            <label for="kode_barang_jadi" class="block mb-1 text-sm font-medium">Kode Barang</label>
-                            <select name="kode_barang" id="kode_barang_jadi" required class="w-full border border-gray-300 p-2 rounded">
-                                <option value="" disabled selected>Pilih Kode Barang</option>
-                                @foreach($barang as $item)
-                                <option value="{{ $item->kode_barang }}" {{ old('kode_barang') == $item->kode_barang ? 'selected' : '' }}>
-                                    {{ $item->kode_barang }} - {{ $item->nama_barang }}
-                                </option>
-                                @endforeach
-                                <option value="lainnya">Lainnya</option>
-                            </select>
-                            @error('kode_barang')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="md:col-span-2">
-                            <label for="stok_barang_jadi" class="block mb-1 text-sm font-medium">Jumlah Barang</label>
-                            <input type="number" name="stok_barang" id="stok_barang_jadi" min="1" required class="w-full border border-gray-300 p-2 rounded" value="{{ old('stok_barang') }}" />
-                            @error('stok_barang')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="md:col-span-2 flex justify-end gap-2 pt-2">
-                            <button type="submit" class="px-4 py-2 text-white bg-green-900 rounded-md hover:bg-green-700">
-                                Perbarui Stok
-                            </button>
-                            <button type="button" onclick="document.getElementById('modaltambahbarang').classList.add('hidden')" class="px-4 py-2 border rounded-md hover:bg-gray-200">
-                                Batal
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>

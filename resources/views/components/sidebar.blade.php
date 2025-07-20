@@ -17,8 +17,17 @@ $role = Auth::user()->role;
             </a>
             @endif
 
-            {{-- Admin Stok dan Super Admin: Stok Barang --}}
-            @if ($role === 'admin_stok' || $role === 'super_admin')
+            {{-- Admin Stok: Master Barang --}}
+            @if ($role === 'admin')
+            <a href="/masterbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
+                <!-- ikon -->
+                <svg width="24" height="24" ...>...</svg>
+                Master Barang
+            </a>
+            @endif
+
+            {{-- Admin Stok: Stok Barang --}}
+            @if ($role === 'admin' || $role === 'kepala')
             <a href="/stokbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
                 <!-- ikon -->
                 <svg width="24" height="24" ...>...</svg>
@@ -26,15 +35,34 @@ $role = Auth::user()->role;
             </a>
             @endif
 
-            {{-- Laporan: Admin Stok, Kepala TPKU, Super Admin --}}
-            @if (in_array($role, ['admin_stok', 'kepala_tpku', 'super_admin']))
+            {{-- Admin Stok: Stok Opname --}}
+            @if ($role === 'admin')
+            <a href="/stokopname" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
+                <!-- ikon -->
+                <svg width="24" height="24" ...>...</svg>
+                Stok Opname
+            </a>
+            @endif
+
+            {{-- Laporan: Admin Stok, Kepala TPKU}}
+            @if ($role === 'admin_stok || $role === 'kepala')
             <a href="/laporanbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
                 <!-- ikon -->
                 <svg width="24" height="24" ...>...</svg>
                 Laporan Barang
             </a>
             @endif
-0
+
+            {{-- Admin Stok: Barang Mentah Masuk --}}
+            @if ($role === 'admin')
+            <a href="/stokopname" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">
+                <!-- ikon -->
+                <svg width="24" height="24" ...>...</svg>
+                Stok Opname
+            </a>
+            @endif
+
+
             {{-- Tombol Logout: semua role --}}
             <button onclick="document.getElementById('logoutModal').classList.remove('hidden')" class="flex items-center gap-3 w-full bg-[#c0392b] hover:bg-[#e74c3c] p-2 rounded-md text-white text-sm transition">
                 <svg width=" 24" height="24" ...>...</svg>

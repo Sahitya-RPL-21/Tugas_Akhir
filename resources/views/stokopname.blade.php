@@ -52,8 +52,8 @@
                 <thead class="bg-[#173720] text-white">
                     <tr>
                         <th class="p-4 text-center text-sm uppercase font-semibold rounded-tl-lg">No</th>
-                        <th class="p-4 text-center text-sm uppercase font-semibold">Nama Barang</th>
                         <th class="p-4 text-center text-sm uppercase font-semibold">Kode Barang</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">Nama Barang</th>
                         <th class="p-4 text-center text-sm uppercase font-semibold">Stok Awal</th>
                         <th class="p-4 text-center text-sm uppercase font-semibold">Stok Fisik</th>
                         <th class="p-4 text-center text-sm uppercase font-semibold">Selisih</th>
@@ -65,8 +65,8 @@
                     @forelse($stokopname as $index => $item)
                     <tr class="border-b border-gray-200 hover:bg-green-50 transition-colors duration-150">
                         <td class="p-4 text-center">{{ $index + $stokopname->firstItem() }}</td>
+                        <td class="p-4 text-center">{{ $item->barang->kode_barang }}</td>
                         <td class="p-4 text-center">{{ $item->barang->nama_barang }}</td>
-                        <td class="p-4 text-center">{{ $item->kode_barang }}</td>
                         <td class="p-4 text-center">{{ $item->stok_awal }}</td>
                         <td class="p-4 text-center">
                             {{ $item->stok_fisik}}
@@ -74,7 +74,7 @@
                         <td class="p-4 text-center font-semibold {{ ($item->stok_fisik - $item->stok_awal) < 0 ? 'text-red-600' : 'text-gray-800' }}">
                             {{ $item->stok_fisik - $item->stok_awal }}
                         </td>
-                        <td class="p-4 text-center">{{ $item->user->name ?? '-' }}</td>
+                        <td class="p-4 text-center">{{ $item->user->username ?? '-' }}</td>
                         <td class="p-4 text-center">
                             {{ $item->keterangan }}
                         </td>
@@ -95,71 +95,64 @@
 
 <div id="modaltambahopname" tabindex="-1" aria-hidden="true"
     class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
-    {{-- Ini adalah div yang membungkus konten modal (kotak putih) --}}
-    {{-- Perhatikan class `z-50` di parent div di atas. Z-index ini harus lebih rendah atau sama dengan konten modal. --}}
-    <div class="relative p-4 w-full max-w-2xl bg-white rounded-lg shadow-xl"
-        x-data="{ showModal: false }"
-        x-init="setTimeout(() => { showModal = true; $el.classList.add('scale-100', 'opacity-100'); }, 50)"
-        x-transition:enter="ease-out duration-300"
-        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-        x-transition:leave="ease-in duration-200"
-        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-
-        <div class="flex items-center justify-between p-5 border-b border-gray-200">
-            <h3 class="text-2xl font-semibold text-gray-900">Tambah Stok Opname</h3>
-            <button type="button" onclick="document.getElementById('modaltambahopname').classList.add('hidden')"
-                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center transition-colors duration-200">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-                <span class="sr-only">Close modal</span>
-            </button>
+    <div class="relative p-4 w-full max-w-4xl">
+        <div class="bg-white rounded-lg shadow-sm">
+            <div class="flex items-center justify-between p-4 border-b">
+                <h3 class="text-xl font-semibold text-gray-900">Tambah Stok Opname</h3>
+                <button type="button" onclick="document.getElementById('modaltambahopname').classList.add('hidden')" class="text-gray-400 hover:text-gray-900 hover:bg-gray-200 rounded-lg text-sm p-2.5 inline-flex items-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form action="{{ route('stokopname.tambah') }}" method="POST" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                @csrf
+                <div class="md:col-span-2">
+                    <label for="barang_id" class="block mb-1 text-sm font-medium">Pilih Barang</label>
+                    <select name="barang_id" id="barang_id" required class="w-full border border-gray-300 p-2 rounded" onchange="updateNamaBarangKeluar()">
+                        <option value="" disabled selected>Pilih Barang</option>
+                        @foreach($barang as $item)
+                        <option value="{{ $item->id }}" data-nama="{{ $item->nama_barang }}" data-stok-awal="{{ $item->stok_barang }}">{{ $item->kode_barang }} - {{ $item->nama_barang }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <label for="nama_barang" class="block mb-1 text-sm font-medium">Nama Barang</label>
+                    <input type="text" name="nama_barang" id="nama_barang" required class="w-full border border-gray-300 p-2 rounded bg-gray-100" readonly />
+                </div>
+                <div class="md:col-span-2">
+                    <label for="stok_barang" class="block mb-1 text-sm font-medium">Stok Sistem</label>
+                    <input type="number" name="stok_barang" id="stok_barang" min="1" required class="w-full border border-gray-300 p-2 rounded bg-gray-100" readonly />
+                </div>
+                <div class="md:col-span-2">
+                    <label for="stok_fisik" class="block mb-1 text-sm font-medium">Stok Fisik</label>
+                    <input type="number" name="stok_fisik" id="stok_fisik" min="0" required class="w-full border border-gray-300 p-2 rounded" />
+                </div>
+                <div class="md:col-span-2">
+                    <label for="keterangan" class="block mb-1 text-sm font-medium">Keterangan</label>
+                    <textarea name="keterangan" id="keterangan" rows="3" class="w-full border border-gray-300 p-2 rounded"></textarea>
+                </div>
+                <div class="md:col-span-2 flex justify-end gap-2 pt-2">
+                    <button type="submit" class="px-4 py-2 text-white bg-green-900 rounded-md hover:bg-green-700">
+                        Tambah
+                    </button>
+                    <button type="button" onclick="document.getElementById('modaltambahkeluar').classList.add('hidden')" class="px-4 py-2 border rounded-md hover:bg-gray-200">
+                        Batal
+                    </button>
+                </div>
+            </form>
         </div>
-        <form action="{{ route('stokopname.tambah') }}" method="POST" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-            @csrf
-            <div class="md:col-span-2">
-                <label for="modal_kode_barang" class="block mb-2 text-sm font-medium text-gray-700">Pilih Barang</label>
-                <select name="kode_barang" id="modal_kode_barang" required
-                    class="w-full border border-green-700 p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-700 transition duration-150 ease-in-out">
-                    <option value="" disabled selected>Pilih Barang</option>
-                    @foreach($barang as $item)
-                    <option value="{{ $item->kode_barang }}">{{ $item->kode_barang }} - {{ $item->nama_barang }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div>
-                <label for="modal_stok_fisik" class="block mb-2 text-sm font-medium text-gray-700">Stok Fisik</label>
-                <input type="number" name="stok_fisik" id="modal_stok_fisik" min="0" required
-                    class="w-full border border-green-700 p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition duration-150 ease-in-out" />
-            </div>
-            <div class="md:col-span-2">
-                <label for="modal_keterangan" class="block mb-2 text-sm font-medium text-gray-700">Keterangan</label>
-                <input type="text" name="keterangan" id="modal_keterangan"
-                    class="w-full border border-green-700 p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition duration-150 ease-in-out" />
-            </div>
-            <div class="md:col-span-2 flex justify-end gap-3 pt-4">
-                <button type="submit"
-                    class="px-6 py-3 text-white bg-green-900 rounded-lg hover:bg-green-700 shadow-md transition-colors duration-200">
-                    Tambah
-                </button>
-                <button type="button" onclick="document.getElementById('modaltambahopname').classList.add('hidden')"
-                    class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-                    Batal
-                </button>
-            </div>
-        </form>
     </div>
 </div>
-
-@if ($errors->any())
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('modaltambahopname').classList.remove('hidden');
-    });
+    function updateNamaBarangKeluar() {
+        var select = document.getElementById('barang_id');
+        var nama = select.options[select.selectedIndex]?.getAttribute('data-nama') || '';
+        var stok_barang = select.options[select.selectedIndex]?.getAttribute('data-stok-awal') || '';
+        document.getElementById('nama_barang').value = nama;
+        document.getElementById('stok_barang').value = stok_barang;
+    }
 </script>
-@endif
 
 {{-- Include Alpine.js for modal transitions (optional, but recommended for smooth UX) --}}
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>

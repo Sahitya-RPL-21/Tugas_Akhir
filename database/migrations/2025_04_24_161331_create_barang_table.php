@@ -13,11 +13,18 @@ return new class extends Migration
     {
         // Create the 'barang' table
         Schema::create('barang', function (Blueprint $table) {
-            $table->string('kode_barang')->primary();
+            $table->id()->primary(); // Auto-incrementing ID
+            $table->string('kode_barang');
             $table->string('nama_barang');
             $table->string('kategori_barang');
+            // jenis barang enum jadi dan mentah
+            $table->enum('jenis_barang', ['jadi', 'mentah'])->default('mentah');
+            // unit barang
+            $table->string('unit_barang');
             $table->integer('stok_barang');
             $table->enum('status_barang', ['Tersedia', 'Tidak Tersedia']);
+            //user_id references the users table
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

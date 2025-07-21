@@ -602,6 +602,32 @@ class BarangController extends Controller
             'data' => $barangMentahMasuk
         ]);
     }
+    public function importStok(Request $request)
+    {
+        $validated = $request->validate([
+            'kode_barang' => 'required|string',
+            'jumlah' => 'required|numeric|min:1',
+        ]);
+
+        $barang = BarangModel::where('kode_barang', $validated['kode_barang'])->first();
+
+        if (!$barang) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Barang tidak ditemukan.'
+            ], 404);
+        }
+
+        $barang->stok_barang += $validated['jumlah']; // asumsi kolomnya bernama `stok`, ganti jika berbeda
+        $barang->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Stok berhasil diperbarui.',
+            'stok_terbaru' => $barang->stok
+        ]);
+    }
+
 
     // public function getBarangMasukDummy()
     // {

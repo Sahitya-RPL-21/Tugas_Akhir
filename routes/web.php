@@ -80,7 +80,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/barangmentahkeluar/{id}', [BarangController::class, 'destroyBarangKeluar'])->name('barangmentahkeluar.destroy'); // <-- ROUTE BARU UNTUK HAPUS BARANG KELUAR
 
 
-    /*
+    /*  
     |--------------------------------------------------------------------------
     | Transaksi Barang Jadi (Home)
     |--------------------------------------------------------------------------
@@ -90,8 +90,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/homebarangmasuk', [BarangController::class, 'tampilkanbarang'])->name('homebarangmasuk');
     Route::post('/homebarangmasuk/tambah', [BarangController::class, 'tambahBarangMasuk'])->name('homebarangmasuk.tambah');
     Route::put('/homebarangmasuk/updateStok', [BarangController::class, 'updateBarangJadi'])->name('homebarangmasuk.updateStok');
+    Route::post('/barang/import-stok', [BarangController::class, 'importStok']);
     Route::get('/homebarangmasuk/{kode_barang}/hapus', [BarangController::class, 'hapus'])->name('homebarangmasuk.hapus');
-
     // Barang Jadi Keluar
     Route::get('/homebarangkeluar', [BarangController::class, 'homebarangkeluar'])->name('homebarangkeluar');
     Route::post('/homebarangkeluar/tambah', [BarangController::class, 'tambahBarangKeluar'])->name('homebarangkeluar.tambah');

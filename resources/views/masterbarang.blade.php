@@ -67,6 +67,7 @@
                             <td class="p-4 text-center">{{ $item->kategori_barang }}</td>
                             <td class="p-4 text-center">{{ $item->jenis_barang }}</td>
                             <td class="p-4 text-center">{{ $item->unit_barang }}</td>
+
                         </tr>
                         @empty
                         <tr>

@@ -9,6 +9,33 @@
 <div class="min-h-screen bg-gray-100">
     <div class="max-w-7xl mx-auto p-6">
         <h1 class="text-4xl font-bold mb-8 text-gray-800">Barang Mentah Keluar</h1>
+        <div class="overflow-x-auto bg-white rounded-lg shadow mb-6">
+            <h2 class="text-2xl font-semibold p-4 border-b bg-[#173720] text-white">Stok Barang Mentah</h2>
+            <table class="min-w-full w-full text-gray-700">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="p-4 text-center text-sm uppercase">No</th>
+                        <th class="p-4 text-center text-sm uppercase">Kode Barang</th>
+                        <th class="p-4 text-center text-sm uppercase">Nama Barang</th>
+                        <th class="p-4 text-center text-sm uppercase">Stok</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($barangMentah as $item)
+                    <tr class="border-b hover:bg-gray-100 transition">
+                        <td class="p-4 text-center">{{ $loop->iteration }}</td>
+                        <td class="p-4 text-center">{{ $item->kode_barang }}</td>
+                        <td class="p-4 text-center">{{ $item->nama_barang }}</td>
+                        <td class="p-4 text-center">{{ $item->stok_barang }}</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="p-4 text-center text-gray-500">Tidak ada data barang mentah.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
         <div class="mb-6 w-full max-w-7xl mx-auto px-4 flex justify-end">
             <button type="button"

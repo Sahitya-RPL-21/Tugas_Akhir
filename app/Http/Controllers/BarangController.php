@@ -8,7 +8,7 @@ use App\Models\Masuk;
 use App\Models\Keluar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\MasukMentah;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -570,9 +570,9 @@ class BarangController extends Controller
 
     public function apiGetBarangMentah()
     {
-        // Mengambil data barang dimana 'jenis_barang' adalah 'mentah',
-        // dengan menghapus spasi di awal/akhir kolom untuk memastikan kecocokan.
-        $barangMentah = \App\Models\BarangModel::whereRaw('TRIM(jenis_barang) = ?', ['mentah'])->get();
+        // Mengambil data barang di mana 'jenis_barang' adalah 'mentah',
+        // mengabaikan huruf besar/kecil dan spasi di awal/akhir.
+        $barangMentah = \App\Models\BarangModel::whereRaw('LOWER(TRIM(jenis_barang)) = ?', ['mentah'])->get();
 
         // Jika tidak ada data yang ditemukan, kembalikan pesan yang sesuai.
         if ($barangMentah->isEmpty()) {
@@ -589,4 +589,38 @@ class BarangController extends Controller
             'data' => $barangMentah
         ]);
     }
+
+    public function getBarangMasukApi()
+    {
+        // Ambil data dari model yang terhubung ke tabel 'pengadaans'
+        // Jika modelmu namanya bukan 'Pengadaan', sesuaikan di sini.
+        $barangMentahMasuk = BarangModel::orderBy('created_at', 'desc')->get();
+
+        // Kembalikan data dalam format JSON
+        return response()->json([
+            'success' => true,
+            'data' => $barangMentahMasuk
+        ]);
+    }
+
+    // public function getBarangMasukDummy()
+    // {
+    //     $path = 'storage/app/private/dummy-barang-masuk.json';
+
+    //     // Cek apakah file dummy ada di storage
+    //     if (!Storage::exists($path)) {
+    //         // Jika tidak ada, kirim pesan error
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'File dummy tidak ditemukan.'
+    //         ], 404);
+    //     }
+
+    //     // Ambil isi file dari storage
+    //     $jsonContent = Storage::get($path);
+
+    //     // Kembalikan isi file sebagai respons JSON
+    //     // Laravel akan otomatis mengatur Content-Type menjadi application/json
+    //     return response($jsonContent)->header('Content-Type', 'application/json');
+    // }
 }

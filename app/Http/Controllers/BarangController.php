@@ -350,7 +350,7 @@ class BarangController extends Controller
             $barang->save();
         }
         $histori->delete();
-        return redirect()->route('barangmentahmasuk')->with('success', 'Histori barang masuk berhasil dihapus dan stok barang diperbarui.');
+        return redirect()->route('homebarangmasuk')->with('success', 'Histori barang masuk berhasil dihapus dan stok barang diperbarui.');
     }
 
     public function apiGetAllBarang()

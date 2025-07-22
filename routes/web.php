@@ -69,7 +69,7 @@ Route::middleware(['auth'])->group(function () {
     | Transaksi Barang Mentah
     |--------------------------------------------------------------------------
     */
-    // Barang Mentah Masuk
+    // Barang Mentah Masuk  
     Route::get('/barangmentahmasuk', [BarangController::class, 'barangmentahmasuk'])->name('barangmentahmasuk');
     Route::post('/barangmentah/tambah', [BarangController::class, 'tambahBarangMentah'])->name('barangmentah.tambah');
     Route::delete('/histori/{id}', [BarangController::class, 'destroyHistori'])->name('histori.destroy'); // Hapus histori barang MASUK
@@ -78,7 +78,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/barangmentahkeluar', [BarangController::class, 'barangmentahkeluar'])->name('barangmentahkeluar');
     Route::post('/barangmentahkeluar/tambah', [BarangController::class, 'tambahBarangMentahKeluar'])->name('barangmentah.tambahkeluar');
     Route::delete('/barangmentahkeluar/{id}', [BarangController::class, 'destroyBarangKeluar'])->name('barangmentahkeluar.destroy'); // <-- ROUTE BARU UNTUK HAPUS BARANG KELUAR
-
 
     /*  
     |--------------------------------------------------------------------------
@@ -92,6 +91,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/homebarangmasuk/updateStok', [BarangController::class, 'updateBarangJadi'])->name('homebarangmasuk.updateStok');
     Route::post('/barang/import-stok', [BarangController::class, 'importStok']);
     Route::get('/homebarangmasuk/{kode_barang}/hapus', [BarangController::class, 'hapus'])->name('homebarangmasuk.hapus');
+    
     // Barang Jadi Keluar
     Route::get('/homebarangkeluar', [BarangController::class, 'homebarangkeluar'])->name('homebarangkeluar');
     Route::post('/homebarangkeluar/tambah', [BarangController::class, 'tambahBarangKeluar'])->name('homebarangkeluar.tambah');

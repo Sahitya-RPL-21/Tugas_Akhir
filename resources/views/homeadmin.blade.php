@@ -96,6 +96,7 @@
                 </div>
             </form>
         </div>
+    </div>
 
     <!-- Modal Edit User -->
     <div id="editAkunPengguna" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
@@ -143,7 +144,7 @@
 
     <script>
         function openEditModal(id, username, role) {
-            document.getElementById('editAkunPengguna').classList.remove('hidden');
+            document.getElementById('editAkunPengguna').classList.toggle('hidden');
             document.getElementById('editUserId').value = id;
             document.getElementById('editUsername').value = username;
             document.getElementById('editRole').value = role;
@@ -152,7 +153,7 @@
         }
 
         function toggleEditModal() {
-            document.getElementById('editAkunPengguna').classList.add('hidden');
+            document.getElementById('editAkunPengguna').classList.toggle('hidden');
         }
     </script>
 

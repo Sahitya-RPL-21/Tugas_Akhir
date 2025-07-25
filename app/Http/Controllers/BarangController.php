@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BarangModel;
+
 use App\Models\StokOpname;
 use App\Models\Masuk;
 use App\Models\Keluar;
@@ -45,6 +46,37 @@ class BarangController extends Controller
         return redirect()->route('stokbarang')->with('success', 'Nama barang berhasil diperbarui!');
     }
 
+    public function filterjenisbarang(Request $request)
+    {
+        $query = BarangModel::query();
+
+        if ($request->filled('jenis_barang_filter')) {
+            $query->where('jenis_barang', $request->jenis_barang_filter);
+        }
+        $barang = $query->get();
+        return view('masterbarang', compact('barang'));
+    }
+
+    public function caristokbarang(Request $request)
+    {
+        $query = BarangModel::query();
+        // Fitur Search
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama_barang', 'like', '%' . $request->search . '%')
+                    ->orWhere('kode_barang', 'like', '%' . $request->search . '%')
+                    ->orWhere('kategori_barang', 'like', '%' . $request->search . '%');
+            });
+        }
+        // Fitur Filter Kategori
+        if ($request->filled('kategori')) {
+            $query->where('kategori_barang', $request->kategori);
+        }
+
+        $barang = $query->get();
+
+        return view('stokbarang', compact('barang'));
+    }
 
     public function tampilkanbarangsearch(Request $request)
     {

@@ -50,13 +50,39 @@
                     </a>
                     @endif
                     @if(auth()->user()->role === 'user'|| auth()->user()->role === 'kepala')
-                    <a href="/stokbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('stokbarang*') ? 'bg-green-900 font-bold' : '' }}">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="4" y="4" width="16" height="16" rx="2" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-                            <path d="M8 8H16V16H8V8Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-                        </svg>
-                        Stok Barang
-                    </a>
+                    <div x-data="{ openStokBarang: {{ Request::is('stokbarang*') ? 'true' : 'false' }} }">
+                        <button @click="openStokBarang = !openStokBarang"
+                            class="flex items-center justify-between w-full px-4 py-2 mt-2 text-left rounded-md text-gray-100 hover:bg-green-900 group {{ Request::is('stokbarang*') ? 'bg-green-900 font-bold' : '' }}">
+                            <div class="flex items-center gap-x-2">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" stroke="white" stroke-width="1.5"
+                                        stroke-linejoin="round" />
+                                    <path d="M8 8H16V16H8V8Z" stroke="white" stroke-width="1.5"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                Stok Barang
+                            </div>
+                            <svg :class="{'transform rotate-90': openStokBarang}" class="w-4 h-4 transition-transform duration-200"
+                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Submenu -->
+                        <div x-show="openStokBarang" x-collapse class="pl-12 mt-2 space-y-1 text-sm text-gray-200">
+                            <a href="/stokbarang/mentah"
+                                class="block px-2 py-1 rounded hover:bg-green-800 {{ Request::is('stokbarang/mentah*') ? 'bg-green-800 font-semibold' : '' }}">
+                                Barang Jadi
+                            </a>
+                            <a href="/stokbarang/jadi"
+                                class="block px-2 py-1 rounded hover:bg-green-800 {{ Request::is('stokbarang/jadi*') ? 'bg-green-800 font-semibold' : '' }}">
+                                Barang Mentah
+                            </a>
+                        </div>
+                    </div>
+                    
                     @endif
                     @if(auth()->user()->role === 'user')
                     <a href="/stokopname" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('stokopname*') ? 'bg-green-900 font-bold' : '' }}">
@@ -84,19 +110,6 @@
                     </a>
                     @endif
 
-                    @if(auth()->user()->role === 'user' || auth()->user()->role === 'kepala')
-                    <a href="/laporanbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('laporanbarang*') ? 'bg-green-900 font-bold' : '' }}">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16 3H11V21H16V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-                            <path d="M21 3H16V21H21V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-                            <path d="M5 3L9 3.5L7.25 21L3 20.5L5 3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-                            <path d="M18.5 9V7.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M13.5 9V7.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Laporan Barang
-                    </a>
-                    @endif
-
                     @if(auth()->user()->role === 'user')
                     <a href="/barangmentahmasuk" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('barangmentahmasuk*') ? 'bg-green-900 font-bold' : '' }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -115,6 +128,20 @@
                         Barang Mentah Keluar
                     </a>
                     @endif
+
+                    @if(auth()->user()->role === 'user' || auth()->user()->role === 'kepala')
+                    <a href="/laporanbarang" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('laporanbarang*') ? 'bg-green-900 font-bold' : '' }}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 3H11V21H16V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M21 3H16V21H21V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M5 3L9 3.5L7.25 21L3 20.5L5 3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M18.5 9V7.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M13.5 9V7.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Laporan Barang
+                    </a>
+                    @endif
+
                     <div class="mb-2 relative group">
                         @if(auth()->user()->role === 'admin')
                         <a href="/homeadmin" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group">

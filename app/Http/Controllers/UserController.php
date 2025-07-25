@@ -11,11 +11,20 @@ class UserController extends Controller
     // User login
     public function login(Request $request)
     {
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-        ]);
+        $username = $request->input('username');
+        $password = $request->input('password');
 
+        if (empty($username) && empty($password)) {
+            return back()->withErrors(['login' => 'Username dan Password harus diisi.'])->withInput();
+        }
+
+        if (empty($username)) {
+            return back()->withErrors(['login' => 'Username wajib diisi.'])->withInput();
+        }
+
+        if (empty($password)) {
+            return back()->withErrors(['login' => 'Password wajib diisi.'])->withInput();
+        }
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {

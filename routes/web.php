@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\MasterBarangController;
+use App\Http\Controllers\StokBarangController;
 use App\Http\Controllers\LaporanBarangController;
 use App\Models\User;
 
@@ -50,6 +52,8 @@ Route::middleware(['auth'])->group(function () {
     */
     // Master Barang
     Route::get('/masterbarang', [BarangController::class, 'masterbarang'])->name('masterbarang');
+    Route::get('/masterbarang', [BarangController::class, 'filterjenisbarang'])->name('masterbarang.search');
+    Route::post('/masterbarang', [BarangController::class, 'store'])->name('masterbarang.store');
     Route::post('/masterbarang/store', [BarangController::class, 'tambahbarang'])->name('masterbarang.store');
     Route::get('/masterbarang/{id}/edit', [BarangController::class, 'editMaster'])->name('masterbarang.edit');
     Route::put('/masterbarang/{id}', [BarangController::class, 'updateMaster'])->name('masterbarang.update');
@@ -57,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Stok Barang & Stok Opname
     Route::get('/stokbarang', [BarangController::class, 'stokbarang'])->name('stokbarang');
+    Route::get('/stokbarang', [BarangController::class, 'caristokbarang'])->name('stokbarang.search');
     Route::put('/stokbarang/{id}', [BarangController::class, 'updateNamaBarang'])->name('stokbarang.update');
     Route::get('/stokopname', [BarangController::class, 'stokopname'])->name('stokopname');
     Route::post('/stokopname/tambah', [BarangController::class, 'tambahStokOpname'])->name('stokopname.tambah');

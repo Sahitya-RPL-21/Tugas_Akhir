@@ -4,178 +4,170 @@
 @section('page_title', 'ADMIN STOK')
 
 @section('content')
-<script src="https://unpkg.com/alpinejs" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
-<div class="min-h-screen bg-gray-100">
-    <div class="max-w-7xl mx-auto p-6">
-        <h1 class="text-4xl font-bold mb-8 text-gray-800">Daftar Barang Masuk</h1>
+<div x-data="pageData()" class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold mb-4 text-gray-800">Barang Masuk</h1>
+        <p class="text-gray-600 mb-6">Halaman data barang masuk.</p>
 
         <!-- Search and Filter Section hanya tampil jika tipe == 'jadi' -->
-        <div x-show="tipe == 'jadi'" class="mb-6 w-full max-w-7xl mx-auto px-4">
-            <form method="GET" action="{{ route('jadi') }}" class="flex items-center justify-between gap-4 w-full">
-                <div class="flex flex-grow gap-4">
-                    <div class="relative" style="min-width: 280px; max-width: 400px;">
-                        <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Cari barang..."
-                            class="h-12 border border-green-700 rounded-lg pl-10 pr-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition w-[280px] md:w-[350px] lg:w-[400px]" />
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg width="20" height="20" fill="none" stroke="#123524" stroke-width="1.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="w-48">
-                        <select name="kategori" class="h-12 w-full border border-green-700 rounded-lg px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700">
-                            <option disabled selected>Pilih Kategori</option>
-                            <option value="BedUnit">BED UNIT</option>
-                            <option value="Benang500Y">Benang 500Y</option>
-                            <option value="Benang5000Y">Benang 5000Y</option>
-                            <option value="BenangBordir">Benang Bordir</option>
-                            <option value="Polyster">Polyster</option>
-                            <option value="Resleting17">Resleting 17CM</option>
-                            <option value="BenangNeci">Benang Neci</option>
-                            <option value="KancingLubang2">Kancing 2 Lubang</option>
-                            <option value="KancingLubang4">Kancing 4 Lubang</option>
-                            <option value="RendaSilang">Renda Silang</option>
-                            <option value="Pita">Pita 1/4</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="button"
-                    class="h-12 flex items-center gap-2 bg-green-900 hover:bg-green-700 text-white font-medium px-5 rounded-lg shadow"
-                    onclick="document.getElementById('modalbuatbarang').classList.remove('hidden')">
-                    <svg class="h-6 w-6" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        <div x-show="tipe === 'jadi'" class="p-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+                <form method="GET" action="{{ route('jadi') }}" class="flex-grow flex flex-col sm:flex-row items-center gap-3 w-full">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
+                        class="h-12 w-full sm:w-auto flex-grow border border-gray-300 rounded-lg pl-4 pr-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+                    <select name="kategori" class="h-12 w-full sm:w-48 border border-gray-300 rounded-lg px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <option value="">Semua Kategori</option>
+                        <option value="BedUnit">BED UNIT</option>
+                        <option value="Benang500Y">Benang 500Y</option>
+                    </select>
+                    <button type="submit" class="h-12 w-full sm:w-auto px-5 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition-colors">Filter</button>
+                </form>
+                <button @click="isModalOpen = true" class="h-12 w-full md:w-auto flex-shrink-0 inline-flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-semibold px-5 rounded-lg shadow-md transition-colors">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
-                    Tambah Barang Masuk
+                    <span>Tambah Masuk</span>
                 </button>
-
-            </form>
+            </div>
         </div>
-
-        <div class="overflow-x-auto bg-white rounded-lg shadow mt-6" x-show="tipe=='jadi'">
-            <table class="min-w-full w-full text-gray-700">
+        <div class="overflow-x-auto border border-gray-200 rounded-lg">
+            <table class="min-w-full w-full text-gray-800">
                 <thead class="bg-[#173720] text-white">
                     <tr>
-                        <th class="p-4 text-center text-sm uppercase">No</th>
-                        <th class="p-4 text-center text-sm uppercase">Tanggal</th>
-                        <th class="p-4 text-center text-sm uppercase">Kode Barang</th>
-                        <th class="p-4 text-center text-sm uppercase">Nama Barang</th>
-                        <th class="p-4 text-center text-sm uppercase">Kategori</th>
-                        <th class="p-4 text-center text-sm uppercase">Unit</th>
-                        <th class="p-4 text-center text-sm uppercase">Jumlah Masuk</th>
-                        <th class="p-4 text-center text-sm uppercase">User</th>
-                        <th class="p-4 text-center text-sm uppercase">Keterangan</th>
-                        <th class="p-4 text-center text-sm uppercase">Aksi</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">No</th>
+                        <th class="p-4 text-left text-sm uppercase font-semibold">Tanggal</th>
+                        <th class="p-4 text-left text-sm uppercase font-semibold">Kode Barang</th>
+                        <th class="p-4 text-left text-sm uppercase font-semibold">Nama Barang</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">Unit</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">Jumlah Masuk</th>
+                        <th class="p-4 text-left text-sm uppercase font-semibold">User</th>
+                        <th class="p-4 text-left text-sm uppercase font-semibold">Keterangan</th>
+                        <th class="p-4 text-center text-sm uppercase font-semibold">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($histori as $item)
-                    <tr class="border-b hover:bg-green-50 transition">
-                        <td class="p-4 text-center">{{ $loop->iteration }}</td>
-                        <td class="p-4 text-center">{{ $item->created_at->setTimezone('Asia/Jakarta')->format('d-m-Y H:i') }}</td>
-                        <td class="p-4 text-center">{{ $item->barang->kode_barang }}</td>
-                        <td class="p-4 text-center">{{ $item->barang->nama_barang ?? '-' }}</td>
-                        <td class="p-4 text-center">{{ $item->barang->kategori_barang ?? '-' }}</td>
-                        <td class="p-4 text-center">{{ $item->barang->unit_barang ?? '-' }}</td>
-                        <td class="p-4 text-center">{{ $item->jumlah_masuk }}</td>
-                        <td class="p-4 text-center">{{ $item->user->username ?? '-' }}</td>
-                        <td class="p-4 text-center">{{ $item->keterangan ?? '-' }}</td>
+                <tbody class="divide-y divide-gray-200">
+                    @forelse ($histori as $item)
+                    <tr class="hover:bg-gray-50">
+                        <td class="p-4 text-center text-gray-500">{{ $loop->iteration }}</td>
+                        <td class="p-4 text-left text-gray-600">{{ $item->created_at->setTimezone('Asia/Jakarta')->format('d M Y, H:i') }}</td>
+                        <td class="p-4 text-left font-mono">{{ $item->barang->kode_barang ?? '-' }}</td>
+                        <td class="p-4 text-left font-medium text-gray-900">{{ $item->barang->nama_barang ?? '-' }}</td>
                         <td class="p-4 text-center">
-                            <form action="{{ route('histori.destroy', $item->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus histori ini?');">
+                            <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">
+                                +{{ $item->jumlah_masuk }} {{ $item->barang->unit_barang ?? '' }}
+                            </span>
+                        </td>
+                        <td class="p-4 text-left text-gray-600">{{ $item->user->username ?? 'N/A' }}</td>
+                        <td class="p-4 text-left text-gray-600">{{ $item->keterangan ?? '-' }}</td>
+                        <td class="p-4 text-center">
+                            <form action="{{ route('histori.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus data ini? Stok akan dikembalikan seperti semula.');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-800">
-                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5.25 0C4.2875 0 3.5 0.7875 3.5 1.75H1.75C0.7875 1.75 0 2.5375 0 3.5H12.25C12.25 2.5375 11.4625 1.75 10.5 1.75H8.75C8.75 0.7875 7.9625 0 7 0H5.25ZM1.75 5.25V13.6675C1.75 13.86 1.89 14 2.0825 14H10.185C10.3775 14 10.5175 13.86 10.5175 13.6675V5.25H8.7675V11.375C8.7675 11.865 8.3825 12.25 7.8925 12.25C7.4025 12.25 7.0175 11.865 7.0175 11.375V5.25H5.2675V11.375C5.2675 11.865 4.8825 12.25 4.3925 12.25C3.9025 12.25 3.5175 11.865 3.5175 11.375V5.25H1.7675H1.75Z" fill="#123524" />
+                                <button type="submit" class="p-2 rounded-full text-gray-500 hover:bg-red-100 hover:text-red-700 transition-colors" title="Hapus Data">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                                     </svg>
                                 </button>
                             </form>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="8" class="p-12 text-center">
+                            <div class="flex flex-col items-center justify-center text-gray-500">
+                                <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <h4 class="text-xl font-semibold mb-1">Belum Ada Data Masuk</h4>
+                                <p>Klik tombol "Tambah Masuk" untuk mencatat data baru.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
-
-        <!-- Modal Buat Barang -->
-        <div id="modalbuatbarang" tabindex="-1" aria-hidden="true"
-            class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
-            <div class="relative p-4 w-full max-w-4xl">
-                <div class="bg-white rounded-lg shadow-sm">
-                    <div class="flex items-center justify-between p-4 border-b">
-                        <h3 class="text-xl font-semibold text-gray-900">Barang Masuk</h3>
-                        <button type="button" onclick="document.getElementById('modalbuatbarang').classList.add('hidden')" class="text-gray-400 hover:text-gray-900 hover:bg-gray-200 rounded-lg text-sm p-2.5 inline-flex items-center">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <form action="{{ route('homebarangmasuk.tambah') }}" method="POST" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        @csrf
-                        <div class="md:col-span-2">
-                            <label for="barang_id" class="block mb-1 text-sm font-medium">Pilih Barang</label>
-                            <select name="barang_id" id="barang_id" required class="w-full border border-gray-300 p-2 rounded" onchange="updateNamaBarang()">
-                                <option value="" disabled selected>Pilih Barang</option>
-                                @foreach($barang as $item)
-                                <option value="{{ $item->id }}" data-nama="{{ $item->nama_barang }}">{{ $item->kode_barang }} - {{ $item->nama_barang }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="md:col-span-2">
-                            <label for="nama_barang" class="block mb-1 text-sm font-medium">Nama Barang</label>
-                            <input type="text" name="nama_barang" id="nama_barang" required class="w-full border border-gray-300 p-2 rounded bg-gray-100" readonly />
-                        </div>
-                        <div class="md:col-span-2">
-                            <label for="jumlah_masuk" class="block mb-1 text-sm font-medium">Jumlah Barang</label>
-                            <input type="number" name="jumlah_masuk" id="jumlah_masuk" min="1" required class="w-full border border-gray-300 p-2 rounded" />
-                        </div>
-                        <!-- keterangan -->
-                        <div class="md:col-span-2">
-                            <label for="keterangan" class="block mb-1 text-sm font-medium">Keterangan</label>
-                            <textarea name="keterangan" id="keterangan" rows="3" class="w-full border border-gray-300 p-2 rounded"></textarea>
-                        </div>
-                        <div class="md:col-span-2 flex justify-end gap-2 pt-2">
-                            <button type="submit" class="px-4 py-2 text-white bg-green-900 rounded-md hover:bg-green-700">
-                                Buat
-                            </button>
-                            <button type="button" onclick="document.getElementById('modalbuatbarang').classList.add('hidden')" class="px-4 py-2 border rounded-md hover:bg-gray-200">
-                                Batal
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <script>
-            function updateNamaBarang() {
-                var select = document.getElementById('barang_id');
-                var nama = select.options[select.selectedIndex]?.getAttribute('data-nama') || '';
-                document.getElementById('nama_barang').value = nama;
-            }
-        </script>
     </div>
 
+
+    <!-- Modal Buat Barang -->
+    <div id="modalbuatbarang" tabindex="-1" aria-hidden="true"
+        class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
+        <div class="relative p-4 w-full max-w-4xl">
+            <div class="bg-white rounded-lg shadow-sm">
+                <div class="flex items-center justify-between p-4 border-b">
+                    <h3 class="text-xl font-semibold text-gray-900">Barang Masuk</h3>
+                    <button type="button" onclick="document.getElementById('modalbuatbarang').classList.add('hidden')" class="text-gray-400 hover:text-gray-900 hover:bg-gray-200 rounded-lg text-sm p-2.5 inline-flex items-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form action="{{ route('homebarangmasuk.tambah') }}" method="POST" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @csrf
+                    <div class="md:col-span-2">
+                        <label for="barang_id" class="block mb-1 text-sm font-medium">Pilih Barang</label>
+                        <select name="barang_id" id="barang_id" required class="w-full border border-gray-300 p-2 rounded" onchange="updateNamaBarang()">
+                            <option value="" disabled selected>Pilih Barang</option>
+                            @foreach($barang as $item)
+                            <option value="{{ $item->id }}" data-nama="{{ $item->nama_barang }}">{{ $item->kode_barang }} - {{ $item->nama_barang }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="nama_barang" class="block mb-1 text-sm font-medium">Nama Barang</label>
+                        <input type="text" name="nama_barang" id="nama_barang" required class="w-full border border-gray-300 p-2 rounded bg-gray-100" readonly />
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="jumlah_masuk" class="block mb-1 text-sm font-medium">Jumlah Barang</label>
+                        <input type="number" name="jumlah_masuk" id="jumlah_masuk" min="1" required class="w-full border border-gray-300 p-2 rounded" />
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="keterangan" class="block mb-1 text-sm font-medium">Keterangan</label>
+                        <textarea name="keterangan" id="keterangan" rows="3" class="w-full border border-gray-300 p-2 rounded"></textarea>
+                    </div>
+                    <div class="md:col-span-2 flex justify-end gap-2 pt-2">
+                        <button type="submit" class="px-4 py-2 text-white bg-green-900 rounded-md hover:bg-green-700">
+                            Buat
+                        </button>
+                        <button type="button" onclick="document.getElementById('modalbuatbarang').classList.add('hidden')" class="px-4 py-2 border rounded-md hover:bg-gray-200">
+                            Batal
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <script>
-        function openEditModal(item) {
-            let modal = document.getElementById('modaleditbarang');
-            let alpineInstance = modal.__alpine; // Access Alpine.js instance
-
-            if (alpineInstance) {
-                // Set the entire item object to the Alpine.js data
-                alpineInstance.$data.itemData = item;
-
-                // Optional: manually set values if x-model doesn't bind immediately
-                // or if you prefer direct DOM manipulation for clarity/debug
-                document.getElementById('edit_nama_barang').value = item.nama_barang;
-                document.getElementById('edit_kategori_barang').value = item.kategori_barang;
-                document.getElementById('edit_unit_barang').value = item.unit_barang;
-                document.getElementById('edit_stok_barang').value = item.stok_barang;
-
-                // Make sure the modal is visible
-                modal.classList.remove('hidden');
-            }
+        function updateNamaBarang() {
+            var select = document.getElementById('barang_id');
+            var nama = select.options[select.selectedIndex]?.getAttribute('data-nama') || '';
+            document.getElementById('nama_barang').value = nama;
         }
     </script>
-    @endsection
+</div>
+
+<script>
+    function openEditModal(item) {
+        let modal = document.getElementById('modaleditbarang');
+        let alpineInstance = modal.__alpine; // Access Alpine.js instance
+
+        if (alpineInstance) {
+            // Set the entire item object to the Alpine.js data
+            alpineInstance.$data.itemData = item;
+
+            // Optional: manually set values if x-model doesn't bind immediately
+            // or if you prefer direct DOM manipulation for clarity/debug
+            document.getElementById('edit_nama_barang').value = item.nama_barang;
+            document.getElementById('edit_kategori_barang').value = item.kategori_barang;
+            document.getElementById('edit_unit_barang').value = item.unit_barang;
+            document.getElementById('edit_stok_barang').value = item.stok_barang;
+
+            // Make sure the modal is visible
+            modal.classList.remove('hidden');
+        }
+    }
+</script>
+@endsection

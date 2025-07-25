@@ -34,13 +34,13 @@
         @csrf
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1" for="username">Username</label>
-          <input id="username" name="username" type="text" placeholder="Masukkan Username" required
-            class="w-full px-4 py-2 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400" />
+          <input id="username" name="username" type="text" placeholder="Masukkan Username"
+            class="w-full px-4 py-2 rounded-lg bg-gray-100 border border-gray-300" />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1" for="password">Password</label>
-          <input id="password" name="password" type="password" placeholder="Masukkan Password" required
-            class="w-full px-4 py-2 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400" />
+          <input id="password" name="password" type="password" placeholder="Masukkan Password"
+            class="w-full px-4 py-2 rounded-lg bg-gray-100 border border-gray-300" />
         </div>
         <button type="submit"
           class="w-full bg-green-700 hover:bg-[#173720] text-white font-bold py-2 rounded-lg transition duration-300">
@@ -52,6 +52,36 @@
   <p class="text-center text-gray-500 text-sm mt-8">
     &copy; {{ date('Y') }} STOKIN TPKU
   </p>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+      const errorBox = document.getElementById('error-message');
+
+      // Reset state
+      usernameInput.classList.remove('border-red-500');
+      passwordInput.classList.remove('border-red-500');
+      errorBox.classList.add('hidden');
+      errorBox.innerText = '';
+
+      if (!username || !password) {
+        e.preventDefault(); // Hentikan form submit
+
+        if (!username) usernameInput.classList.add('border-red-500');
+        if (!password) passwordInput.classList.add('border-red-500');
+
+        if (!username && !password) {
+          errorBox.innerText = 'Username dan Password harus diisi.';} 
+
+        errorBox.classList.remove('hidden');
+      }
+    });
+  </script>
+
+
 </body>
 
 </html>

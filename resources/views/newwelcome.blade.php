@@ -70,19 +70,18 @@
                             </svg>
                         </button>
 
-                        <!-- Submenu -->
                         <div x-show="openStokBarang" x-collapse class="pl-12 mt-2 space-y-1 text-sm text-gray-200">
-                            <a href="/stokbarang/mentah"
-                                class="block px-2 py-1 rounded hover:bg-green-800 {{ Request::is('stokbarang/mentah*') ? 'bg-green-800 font-semibold' : '' }}">
-                                Barang Jadi
-                            </a>
                             <a href="/stokbarang/jadi"
                                 class="block px-2 py-1 rounded hover:bg-green-800 {{ Request::is('stokbarang/jadi*') ? 'bg-green-800 font-semibold' : '' }}">
+                                Barang Jadi
+                            </a>
+                            <a href="/stokbarang/mentah"
+                                class="block px-2 py-1 rounded hover:bg-green-800 {{ Request::is('stokbarang/mentah*') ? 'bg-green-800 font-semibold' : '' }}">
                                 Barang Mentah
                             </a>
                         </div>
                     </div>
-                    
+
                     @endif
                     @if(auth()->user()->role === 'user')
                     <a href="/stokopname" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('stokopname*') ? 'bg-green-900 font-bold' : '' }}">
@@ -92,7 +91,7 @@
                         </svg>
                         Stok Opname
                     </a>
-                    <a href="/homebarangmasuk" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('stokbarang*') ? 'bg-green-900 font-bold' : '' }}">
+                    <a href="/homebarangmasuk" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('barangmasuk*') ? 'bg-green-900 font-bold' : '' }}">
                         <svg class="h-6 w-6 text-green-200" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M13.4953 3.375H3.375V23.625H13.5" stroke="white" stroke-width="1.6875" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M14.0625 18.5625L9 13.5L14.0625 8.4375" stroke="white" stroke-width="1.6875" stroke-linecap="round" stroke-linejoin="round" />
@@ -100,7 +99,7 @@
                         </svg>
                         Barang Masuk
                     </a>
-                    <a href="/homebarangkeluar" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('barangmentah*') ? 'bg-green-900 font-bold' : '' }}">
+                    <a href="/homebarangkeluar" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('homebarangkeluar*') ? 'bg-green-900 font-bold' : '' }}">
                         <svg class="h-6 w-6 text-yellow-200" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12.9955 3.25H3.25V22.75H13" stroke="white" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M17.875 17.875L22.75 13L17.875 8.125" stroke="white" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />

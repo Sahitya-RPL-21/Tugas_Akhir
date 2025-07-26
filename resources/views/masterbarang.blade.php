@@ -15,26 +15,36 @@
                 <button type="button"
                     class="w-full sm:w-auto h-12 flex items-center justify-center gap-2 bg-green-900 hover:bg-green-800 text-white font-semibold px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
                     onclick="document.getElementById('modaltambahbarang').classList.remove('hidden')">
-                   <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                     </svg>
                     Tambah Barang Baru
                 </button>
-                <form method="GET" action="{{ route('masterbarang.search') }}" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-                    <div class="w-full sm:w-48">
-                        <label for="jenis_barang_filter" class="sr-only">Pilih Jenis Barang</label>
-                        <select name="jenis_barang_filter" id="jenis_barang_filter"
-                            class="h-12 w-full border border-gray-300 rounded-lg px-3 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition">
-                            <option value="">Semua Jenis</option>
-                            <option value="jadi" @if(request('jenis_barang_filter')=='jadi' ) selected @endif>Barang Jadi</option>
-                            <option value="mentah" @if(request('jenis_barang_filter')=='mentah' ) selected @endif>Barang Mentah</option>
-                        </select>
+                <form method="GET" action="{{ route('masterbarang.search') }}"
+                    class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                    <div class="w-full sm:w-64">
+                        <label for="search" class="sr-only">Cari</label>
+                        <input type="text" name="search" id="search" value="{{ request('search') }}"
+                            placeholder="Cari Kode/Nama Barang..."
+                            class="h-12 w-full border border-gray-300 rounded-lg px-3 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition" />
                     </div>
-                    <button type="submit"
-                        class="h-12 w-full sm:w-auto px-5 bg-gray-700 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition-colors">
-                        Filter
-                    </button>
                 </form>
+
+                    <form method="GET" action="{{ route('masterbarang.searchjenis') }}" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                        <div class="w-full sm:w-48">
+                            <label for="jenis_barang_filter" class="sr-only">Pilih Jenis Barang</label>
+                            <select name="jenis_barang_filter" id="jenis_barang_filter"
+                                class="h-12 w-full border border-gray-300 rounded-lg px-3 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition">
+                                <option value="">Semua Jenis</option>
+                                <option value="jadi" @if(request('jenis_barang_filter')=='jadi' ) selected @endif>Barang Jadi</option>
+                                <option value="mentah" @if(request('jenis_barang_filter')=='mentah' ) selected @endif>Barang Mentah</option>
+                            </select>
+                        </div>
+                        <button type="submit"
+                            class="h-12 w-full sm:w-auto px-5 bg-gray-700 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition-colors">
+                            Filter
+                        </button>
+                    </form>
             </div>
         </div>
 
@@ -120,9 +130,12 @@
                     </div>
                     <div>
                         <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-700">Nama Barang</label>
-                        <input type="text" name="nama_barang" id="nama_barang" required
+                        <input type="text" name="nama_barang" id="nama_barang" required pattern=".*[a-zA-Z]+.*"
+                            title="Nama barang tidak boleh hanya menggunakan angka"
                             class="w-full border border-green-700 p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition duration-150 ease-in-out" />
+                        <span id="error-nama" class="text-red-600 text-sm mt-1 hidden"></span>
                     </div>
+
                     <div class="md:col-span-2">
                         <label for="jenis_barang" class="block mb-2 text-sm font-medium text-gray-700">Jenis Barang</label>
                         <select name="jenis_barang" id="jenis_barang" required
@@ -179,7 +192,25 @@
         </div>
     </div>
 
-    {{-- Script for Alpine.js, bisa dihapus jika tidak digunakan secara ekstensif --}}
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+
+    <script>
+        document.getElementById('nama_barang').addEventListener('submit', function(e) {
+            const namaInput = document.getElementById('nama_barang');
+            const errorMsg = document.getElementById('error-nama');
+
+            const onlyNumbers = /^[0-9]+$/;
+
+            if (onlyNumbers.test(namaInput.value)) {
+                e.preventDefault(); // Stop form submission
+                errorMsg.textContent = "Nama barang tidak boleh hanya angka.";
+                errorMsg.classList.remove("hidden");
+                namaInput.classList.add("border-red-600");
+            } else {
+                errorMsg.classList.add("hidden");
+                namaInput.classList.remove("border-red-600");
+            }
+        });
+    </script>
+
 
     @endsection

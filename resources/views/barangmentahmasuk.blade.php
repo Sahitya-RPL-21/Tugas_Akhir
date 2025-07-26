@@ -9,7 +9,6 @@
         <h1 class="text-4xl font-bold mb-8 text-gray-800">Barang Mentah Masuk</h1>
 
         <div class="mb-6 w-full max-w-7xl mx-auto px-4 flex justify-end gap-4">
-            {{-- Tombol untuk memicu pengambilan data --}}
             <!-- <button type="button"
                 id="refresh-button"
                 class="h-12 flex items-center justify-center gap-2 bg-[#173720] border border-green-900 text-white hover:bg-green-800 font-medium px-5 rounded-lg shadow transition-colors duration-200">
@@ -45,11 +44,6 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-
-        {{-- Modal tidak diubah --}}
-        <div id="modalmasukbarangmentah" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 ...">
-            {{-- ... Isi modalmu tetap di sini ... --}}
         </div>
     </div>
 </div>

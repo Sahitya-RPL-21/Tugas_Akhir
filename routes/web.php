@@ -52,7 +52,8 @@ Route::middleware(['auth'])->group(function () {
     */
     // Master Barang
     Route::get('/masterbarang', [BarangController::class, 'masterbarang'])->name('masterbarang');
-    Route::get('/masterbarang', [BarangController::class, 'filterjenisbarang'])->name('masterbarang.search');
+    Route::get('/masterbarang/search', [BarangController::class, 'masterbarangsearch'])->name('masterbarang.search');
+    Route::get('/masterbarang/searchjenis', [BarangController::class, 'filterjenisbarang'])->name('masterbarang.searchjenis');
     Route::post('/masterbarang', [BarangController::class, 'store'])->name('masterbarang.store');
     Route::post('/masterbarang/store', [BarangController::class, 'tambahbarang'])->name('masterbarang.store');
     Route::get('/masterbarang/{id}/edit', [BarangController::class, 'editMaster'])->name('masterbarang.edit');
@@ -60,8 +61,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/masterbarang/{id}', [BarangController::class, 'destroyMaster'])->name('masterbarang.destroy');
 
     // Stok Barang & Stok Opname
-    Route::get('/stokbarang', [BarangController::class, 'stokbarang'])->name('stokbarang');
+    // Route::get('/stokbarang', [BarangController::class, 'stokbarang'])->name('stokbarang');
     Route::get('/stokbarang', [BarangController::class, 'caristokbarang'])->name('stokbarang.search');
+    Route::get('/stokbarang/mentah', [BarangController::class, 'stokBarangMentah'])->name('stokbarang.mentah');
+    Route::get('/stokbarang/jadi', [BarangController::class, 'stokBarangJadi'])->name('stokbarang.jadi');
     Route::put('/stokbarang/{id}', [BarangController::class, 'updateNamaBarang'])->name('stokbarang.update');
     Route::get('/stokopname', [BarangController::class, 'stokopname'])->name('stokopname');
     Route::post('/stokopname/tambah', [BarangController::class, 'tambahStokOpname'])->name('stokopname.tambah');
@@ -96,7 +99,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/homebarangmasuk/updateStok', [BarangController::class, 'updateBarangJadi'])->name('homebarangmasuk.updateStok');
     Route::post('/barang/import-stok', [BarangController::class, 'importStok']);
     Route::get('/homebarangmasuk/{kode_barang}/hapus', [BarangController::class, 'hapus'])->name('homebarangmasuk.hapus');
-    
+
     // Barang Jadi Keluar
     Route::get('/homebarangkeluar', [BarangController::class, 'homebarangkeluar'])->name('homebarangkeluar');
     Route::post('/homebarangkeluar/tambah', [BarangController::class, 'tambahBarangKeluar'])->name('homebarangkeluar.tambah');

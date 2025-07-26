@@ -21,10 +21,16 @@ class BarangController extends Controller
     }
 
     // Menampilkan halaman stok barang
-    public function stokbarang()
+    public function stokbarangjadi()
     {
-        $barang = BarangModel::all();
-        return view('stokbarang', compact('barang'));
+        $barang = BarangModel::where('jenis_barang', 'jadi')->get();
+        return view('stokbarangjadi', compact('barang'));
+    }
+
+    public function stokbarangmentah()
+    {
+        $barangMentah = BarangModel::where('jenis_barang', 'mentah')->get();
+        return view('stokbarangmentah', compact('barangMentah'));
     }
 
     public function editNamaBarang($id)
@@ -46,6 +52,21 @@ class BarangController extends Controller
         return redirect()->route('stokbarang')->with('success', 'Nama barang berhasil diperbarui!');
     }
 
+    public function masterbarangsearch(Request $request)
+    {
+        $query = BarangModel::query();
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama_barang', 'like', '%' . $request->search . '%')
+                    ->orWhere('kode_barang', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $barang = $query->paginate(15);
+
+        return view('masterbarang', compact('barang'));
+    }
     public function filterjenisbarang(Request $request)
     {
         $query = BarangModel::query();
@@ -56,6 +77,7 @@ class BarangController extends Controller
         $barang = $query->get();
         return view('masterbarang', compact('barang'));
     }
+
 
     public function caristokbarang(Request $request)
     {
@@ -126,12 +148,11 @@ class BarangController extends Controller
     public function tambahbarang(Request $request)
     {
         $request->validate([
-            'kode_barang' => 'required',
-            'nama_barang' => 'required',
-
-            'kategori_barang' => 'required',
-            'jenis_barang' => 'required',
-            'unit_barang' => 'required',
+            'kode_barang' => 'required|string|max:255',
+            'nama_barang' => ['required', 'string', 'max:255', 'regex:/[a-zA-Z]/'],
+            'jenis_barang' => 'required|in:jadi,mentah',
+            'unit_barang' => 'required|string',
+            'kategori_barang' => 'required|string',
         ]);
 
         // Cek apakah barang sudah ada

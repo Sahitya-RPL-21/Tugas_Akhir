@@ -86,6 +86,10 @@
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                     <input type="password" id="password" name="password" class="w-full border border-gray-300 p-2 rounded" required>
                 </div>
+                <div class="mb-4">
+                    <label for="konfirmasipassword" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
+                    <input type="password" id="password_confirmation" name="password_confirmation" class="w-full border border-gray-300 p-2 rounded" required>
+                </div>
                 <div class="flex justify-end">
                     <button type="button" onclick="document.getElementById('tambahAkunPengguna').classList.add('hidden')" class="py-2 px-4 bg-gray-300 text-gray-800 rounded-lg mr-2 hover:bg-gray-400 focus:outline-none">
                         Batal
@@ -120,9 +124,15 @@
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label for="editUserPassword" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input type="password" id="editUserPassword" name="password" class="w-full border border-gray-300 p-2 rounded" required>
+                    <label for="editPassword" class="block text-sm font-medium text-gray-700">Edit Password</label>
+                    <input type="password" id="editUserPassword" name="password" class="w-full border border-gray-300 p-2 rounded">
                 </div>
+
+                <div class="mb-4">
+                    <label for="editkonfirmasipassword" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
+                    <input type="password" id="editUserPasswordConfirm" name="password_confirmation" class="w-full border border-gray-300 p-2 rounded">
+                </div>
+
                 <div class="flex justify-end">
                     <button type="button" onclick="toggleEditModal()" class="py-2 px-4 bg-gray-300 text-gray-800 rounded-lg mr-2 hover:bg-gray-400 focus:outline-none">
                         Batal

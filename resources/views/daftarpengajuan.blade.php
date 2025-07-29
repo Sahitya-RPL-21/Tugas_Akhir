@@ -6,7 +6,8 @@
 @section('content')
 <div class="min-h-screen bg-gray-100">
     <div class="max-w-7xl mx-auto p-6">
-        <h1 class="text-4xl font-bold mb-8 text-gray-800">Barang Mentah Masuk</h1>
+        <h1 class="text-4xl font-bold mb-8 text-gray-800">Daftar Pengadaan Barang Mentah</h1>
+        <p class="mb-8 text-gray-600">Permintaan pengadaan barang mentah.</p>
 
         <div class="mb-6 w-full max-w-7xl mx-auto px-4 flex justify-end">
             <button type="button"
@@ -24,22 +25,34 @@
                 <thead class="bg-[#173720] text-white">
                     <tr>
                         <th class="p-4 text-center text-sm uppercase">No</th>
-                        <th class="p-4 text-center text-sm uppercase">Tanggal</th>
+                        <th class="p-4 text-center text-sm uppercase">Tanggal Pengajuan</th>
                         <th class="p-4 text-center text-sm uppercase">Kode Barang</th>
                         <th class="p-4 text-center text-sm uppercase">Nama Barang</th>
-                        <th class="p-4 text-center text-sm uppercase">Supplier</th>
-                        <th class="p-4 text-center text-sm uppercase">Invoice</th>
-                        <th class="p-4 text-center text-sm uppercase">Jumlah Masuk</th>
-                        <th class="p-4 text-center text-sm uppercase">Aksi</th>
+                        <th class="p-4 text-center text-sm uppercase">Kategori Barang</th>
+                        <th class="p-4 text-center text-sm uppercase">Jumlah Pengajuan</th>
+                        <th class="p-4 text-center text-sm uppercase">Unit Barang</th>
+                        <th class="p-4 text-center text-sm uppercase">Pengajuan Oleh</th>
+                        <th class="p-4 text-center text-sm uppercase">Status Pengajuan</th>
                     </tr>
                 </thead>
                 <tbody id="data-barang-masuk">
-                    {{-- DIUBAH: Tampilan awal tabel --}}
-                    <tr>
-                        <td colspan="10" class="p-6 text-center text-gray-500">
-                            Tekan tombol "Sinkronisasi Data" untuk memuat data terbaru.
+                    @foreach ($pengajuan as $item)
+                    <tr class="border-b hover:bg-red-50 transition">
+                        <td class="p-4 text-center">{{ $loop->iteration }}</td>
+                        <td class="p-4 text-center">
+                            {{ \Carbon\Carbon::parse($item->tanggal_pengadaan)->format('d-m-Y') }}
                         </td>
+
+                        <td class="p-4 text-center">{{ $item->barang->kode_barang }}</td>
+                        <td class="p-4 text-center">{{ $item->barang->nama_barang ?? '-' }}</td>
+                        <td class="p-4 text-center">{{ $item->barang->kategori_barang ?? '-' }}</td>
+                        <td class="p-4 text-center">{{ $item->jumlah }}</td>
+                        <td class="p-4 text-center">{{ $item->barang->unit_barang ?? '-' }}</td>
+                        <td class="p-4 text-center">{{ $item->user->username ?? '-' }}</td>
+                        <td class="p-4 text-center">{{ $item->status_pengadaan ?? '-' }}</td>
+
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -97,98 +110,6 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        loadData();
-    });
-
-    function loadData() {
-        const tbody = document.getElementById('data-barang-masuk');
-        tbody.innerHTML = '<tr><td colspan="10" class="p-6 text-center">Memuat data...</td></tr>';
-
-        fetch('http://178.128.216.105/api/pengadaan')
-            .then(response => response.json())
-            .then(result => {
-                renderTable(result.rows || []);
-            });
-    }
-
-    function renderTable(items) {
-        const tbody = document.getElementById('data-barang-masuk');
-        tbody.innerHTML = '';
-
-        if (!items || items.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="10" class="p-6 text-center text-gray-500">Data tidak ditemukan atau kosong.</td></tr>';
-            return;
-        }
-
-        items.forEach((item, index) => {
-            const tanggal = new Date(item.tanggal_pembelian).toLocaleDateString('id-ID');
-            const kodeBarang = item.barang?.kode_barang ?? '-';
-            const namaBarang = item.barang?.nama ?? '-';
-            const supplier = item.supplier?.nama_supplier ?? '-';
-            const invoice = item.no_invoice ?? '-';
-            const jumlahMasuk = item.jumlah_masuk;
-
-            const row = document.createElement('tr');
-            row.classList.add('border-b', 'hover:bg-green-50', 'transition');
-
-            row.innerHTML = `
-                <td class="p-4 text-center">${index + 1}</td>
-                <td class="p-4 text-center">${tanggal}</td>
-                <td class="p-4 text-center">${kodeBarang}</td>
-                <td class="p-4 text-center">${namaBarang}</td>
-                <td class="p-4 text-center">${supplier}</td>
-                <td class="p-4 text-center">${invoice}</td>
-                <td class="p-4 text-center">${jumlahMasuk}</td>
-                <td class="p-4 text-center">
-                    <button
-                        class="add-to-stock bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm"
-                        data-kode="${kodeBarang}"
-                        data-jumlah="${jumlahMasuk}"
-                    >Tambah ke Stok</button>
-                </td>
-            `;
-
-            tbody.appendChild(row);
-        });
-
-        // Tambahkan event listener ke setiap tombol
-        document.querySelectorAll('.add-to-stock').forEach(button => {
-            button.addEventListener('click', function() {
-                const kode = this.getAttribute('data-kode');
-                const jumlah = this.getAttribute('data-jumlah');
-                tambahStok(kode, jumlah, this);
-            });
-        });
-    }
-
-    function tambahStok(kode_barang, jumlah, btnElement) {
-        fetch('/barang/import-stok', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    kode_barang,
-                    jumlah
-                })
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    btnElement.textContent = 'Sudah Ditambahkan';
-                    btnElement.disabled = true;
-                    btnElement.classList.remove('bg-green-600', 'hover:bg-green-700');
-                    btnElement.classList.add('bg-gray-400', 'cursor-not-allowed');
-                } else {
-                    alert(result.message || 'Gagal menambahkan stok');
-                }
-            })
-            .catch(() => alert('Terjadi kesalahan saat menghubungi server.'));
-    }
-
-
     function updateNamaBarangMentahKeluar() {
         var select = document.getElementById('barang_mentah_id');
         var selectedOption = select.options[select.selectedIndex];

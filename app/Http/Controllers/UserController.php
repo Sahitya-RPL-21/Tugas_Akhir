@@ -71,27 +71,52 @@ class UserController extends Controller
         $request->validate([
             'username' => 'required|string|max:255',
             'role' => 'required',
+            'password' => 'nullable|confirmed|min:5', // tambahkan validasi ini
+
         ]);
 
-        // Cek apakah username sudah ada
         if (User::where('username', $request->username)->where('id', '!=', $id)->exists()) {
             return back()->withErrors(['username' => 'Username sudah digunakan.'])->withInput();
         }
 
-        $user->update([
+        $data = [
             'username' => $request->username,
             'role' => $request->role,
-        ]);
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
+
+        $user->update($data);
+
 
         return redirect()->route('homeadmin')->with('success', 'Akun pengguna berhasil diperbarui');
     }
-    
-    // Fungsi untuk menampilkan modal tambah pengguna (jika menggunakan AJAX/modal)
+
     public function tambahpenggunamodal()
     {
-        return view('tambahpenggunamodal');
+        return view('homeadmin');
     }
 
+    
+
+    public function tambahpengguna(Request $request)
+    {
+        $validated = $request->validate([
+            'username' => 'required|unique:users,username',
+            'password' => 'required|confirmed|min:5',
+            'role' => 'required|in:user,kepala,admin',
+        ]);
+
+        User::create([
+            'username' => $validated['username'],
+            'password' => bcrypt($validated['password']),
+            'role' => $validated['role'],
+        ]);
+
+        return redirect()->back()->with('success', 'Pengguna berhasil ditambahkan.');
+    }
     public function hapusAkunPengguna($id)
     {
         $user = User::findOrFail($id);

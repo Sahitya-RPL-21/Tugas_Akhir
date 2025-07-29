@@ -87,20 +87,24 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/barangmentahkeluar/tambah', [BarangController::class, 'tambahBarangMentahKeluar'])->name('barangmentah.tambahkeluar');
     Route::delete('/barangmentahkeluar/{id}', [BarangController::class, 'destroyBarangKeluar'])->name('barangmentahkeluar.destroy'); // <-- ROUTE BARU UNTUK HAPUS BARANG KELUAR
 
+    /*route pengajuan pengadaan barang mentah*/
+    Route::get('/daftarpengajuan', [BarangController::class, 'daftarPengajuan'])->name('daftarpengajuan');
+    Route::post('/pengajuanpengadaan/tambah', [BarangController::class, 'tambahPengadaan'])->name('pengadaanbarangmentah');
     /*  
     |--------------------------------------------------------------------------
     | Transaksi Barang Jadi (Home)
     |--------------------------------------------------------------------------
     */
     // Barang Jadi Masuk
-    Route::get('/jadi', [BarangController::class, 'tampilkanbarangsearch'])->name('jadi');
+    Route::get('/homebarangmasuk/search', [BarangController::class, 'tampilkanbarangsearch'])->name('homebarangmasuk.search');
     Route::get('/homebarangmasuk', [BarangController::class, 'tampilkanbarang'])->name('homebarangmasuk');
     Route::post('/homebarangmasuk/tambah', [BarangController::class, 'tambahBarangMasuk'])->name('homebarangmasuk.tambah');
     Route::put('/homebarangmasuk/updateStok', [BarangController::class, 'updateBarangJadi'])->name('homebarangmasuk.updateStok');
     Route::post('/barang/import-stok', [BarangController::class, 'importStok']);
     Route::get('/homebarangmasuk/{kode_barang}/hapus', [BarangController::class, 'hapus'])->name('homebarangmasuk.hapus');
-
+    
     // Barang Jadi Keluar
+    Route::get('/homebarangkeluar/search', [BarangController::class, 'tampilkanbarangkeluarsearch'])->name('homebarangkeluar.search');
     Route::get('/homebarangkeluar', [BarangController::class, 'homebarangkeluar'])->name('homebarangkeluar');
     Route::post('/homebarangkeluar/tambah', [BarangController::class, 'tambahBarangKeluar'])->name('homebarangkeluar.tambah');
     Route::delete('/homebarangkeluar/{id}/hapus', [BarangController::class, 'hapusBarangKeluar'])->name('homebarangkeluar.hapus');
@@ -122,7 +126,12 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware('role:admin')->group(function () {
-        Route::post('/tambahpengguna', [UserController::class, 'tambahpenggunamodal'])->name('tambahpenggunamodal');
+        Route::get('/tambahpengguna', [UserController::class, 'tambahpenggunamodal'])->name('tambahpengguna');
+        Route::post('/tambahpengguna', [UserController::class, 'tambahpengguna'])->name('tambahpenggunamodal');
+        Route::get('/tambahpenggunamodal', function () {
+            $users = User::all();
+            return view('homeadmin', compact('users'));
+        });
         Route::put('/users/{id}', [UserController::class, 'updateAkunPengguna'])->name('user.update');
         Route::delete('/users/{id}', [UserController::class, 'hapusAkunPengguna'])->name('user.destroy');
     });

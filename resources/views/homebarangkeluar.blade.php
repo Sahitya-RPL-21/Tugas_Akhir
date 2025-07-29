@@ -14,15 +14,37 @@
         <!-- Search and Filter Section -->
         <div x-show="tipe === 'jadi'" class="p-4">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-                <form method="GET" action="{{ route('jadi') }}" class="flex-grow flex flex-col sm:flex-row items-center gap-3 w-full">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
-                        class="h-12 w-full sm:w-auto flex-grow border border-gray-300 rounded-lg pl-4 pr-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
-                    <select name="kategori" class="h-12 w-full sm:w-48 border border-gray-300 rounded-lg px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500">
-                        <option value="">Semua Kategori</option>
-                        <option value="BedUnit">BED UNIT</option>
-                        <option value="Benang500Y">Benang 500Y</option>
-                    </select>
-                    <button type="submit" class="h-12 w-full sm:w-auto px-5 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition-colors">Filter</button>
+                <form method="GET" action="{{ route('homebarangkeluar.search') }}">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                        <div class="md:col-span-2">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="#123524" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                                    </svg>
+                                </div>
+                                <input type="text" id="search" name="search" value="{{ request('search') }}"
+                                    placeholder="Masukkan kode atau nama barang..."
+                                    class="h-12 w-full border border-gray-300 rounded-lg pl-10 pr-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 transition" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <select id="kategori" name="kategori" class="h-12 w-full border border-gray-300 rounded-lg px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600">
+                                <option value="" class="text-gray-400">Semua Kategori</option>
+                                <option value="Bed Unit" @if(request('kategori')=='Bed Unit' ) selected @endif>BED UNIT</option>
+                                <option value="Benang 500Y" @if(request('kategori')=='Benang 500Y' ) selected @endif>Benang 500Y</option>
+                                <option value="Benang 5000Y" @if(request('kategori')=='Benang 5000Y' ) selected @endif>Benang 5000Y</option>
+                                <option value="Atasan SMP Laki-Laki" @if(request('kategori')=='Atasan SMP Laki-Laki' ) selected @endif>Atasan SMP Laki-Laki</option>
+                            </select>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <button type="submit" class="w-full h-12 inline-flex items-center justify-center px-4 py-2 bg-green-900 text-white rounded-lg hover:bg-green-800 transition-colors">
+                                Cari Kategori
+                            </button>
+                        </div>
+                    </div>
                 </form>
                 <button type="button" onclick="document.getElementById('modaltambahkeluar').classList.remove('hidden')" class="h-12 w-full sm:w-auto flex-shrink-0 inline-flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-semibold px-5 rounded-lg shadow-md transition-colors">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

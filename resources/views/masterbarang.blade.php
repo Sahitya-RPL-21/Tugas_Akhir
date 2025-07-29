@@ -30,21 +30,21 @@
                     </div>
                 </form>
 
-                    <form method="GET" action="{{ route('masterbarang.searchjenis') }}" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-                        <div class="w-full sm:w-48">
-                            <label for="jenis_barang_filter" class="sr-only">Pilih Jenis Barang</label>
-                            <select name="jenis_barang_filter" id="jenis_barang_filter"
-                                class="h-12 w-full border border-gray-300 rounded-lg px-3 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition">
-                                <option value="">Semua Jenis</option>
-                                <option value="jadi" @if(request('jenis_barang_filter')=='jadi' ) selected @endif>Barang Jadi</option>
-                                <option value="mentah" @if(request('jenis_barang_filter')=='mentah' ) selected @endif>Barang Mentah</option>
-                            </select>
-                        </div>
-                        <button type="submit"
-                            class="h-12 w-full sm:w-auto px-5 bg-gray-700 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition-colors">
-                            Filter
-                        </button>
-                    </form>
+                <form method="GET" action="{{ route('masterbarang.searchjenis') }}" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                    <div class="w-full sm:w-48">
+                        <label for="jenis_barang_filter" class="sr-only">Pilih Jenis Barang</label>
+                        <select name="jenis_barang_filter" id="jenis_barang_filter"
+                            class="h-12 w-full border border-gray-300 rounded-lg px-3 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition">
+                            <option value="">Semua Jenis</option>
+                            <option value="jadi" @if(request('jenis_barang_filter')=='jadi' ) selected @endif>Barang Jadi</option>
+                            <option value="mentah" @if(request('jenis_barang_filter')=='mentah' ) selected @endif>Barang Mentah</option>
+                        </select>
+                    </div>
+                    <button type="submit"
+                        class="h-12 w-full sm:w-auto px-5 bg-gray-700 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition-colors">
+                        Filter
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -125,9 +125,10 @@
                     @csrf
                     <div>
                         <label for="kode_barang" class="block mb-2 text-sm font-medium text-gray-700">Kode Barang</label>
-                        <input type="text" name="kode_barang" id="kode_barang" required
-                            class="w-full border border-green-700 p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition duration-150 ease-in-out" />
+                        <input type="text" name="kode_barang" id="kode_barang"
+                            class="w-full border border-green-700 p-3 rounded-lg shadow-sm bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-700 transition duration-150 ease-in-out" />
                     </div>
+
                     <div>
                         <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-700">Nama Barang</label>
                         <input type="text" name="nama_barang" id="nama_barang" required pattern=".*[a-zA-Z]+.*"
@@ -162,7 +163,7 @@
                     <div class="md:col-span-2">
                         <label for="kategori_barang" class="block mb-2 text-sm font-medium text-gray-700">Kategori Barang</label>
                         <select name="kategori_barang" id="kategori_barang" required
-                            class="w-full border border-green-700 p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition duration-150 ease-in-out">
+                            onchange="generateKodeBarang()" class="w-full border border-green-700 p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700 transition duration-150 ease-in-out">
                             <option value="" disabled selected>Pilih Kategori</option>
                             <option value="BED UNIT">BED UNIT</option>
                             <option value="Benang 500Y">Benang 500Y</option>
@@ -210,6 +211,23 @@
                 namaInput.classList.remove("border-red-600");
             }
         });
+
+        function generateKodeBarang() {
+            const kategori = document.getElementById('kategori_barang').value;
+            const kodeField = document.getElementById('kode_barang');
+
+            if (kategori) {
+                const initials = kategori
+                    .split(' ') // Pisahkan per kata
+                    .map(word => word[0]) // Ambil huruf pertama tiap kata
+                    .join('')
+                    .toUpperCase()
+                    .substring(0, 2); // Ambil 2 huruf pertama
+
+                const randomNumber = Math.floor(1000 + Math.random() * 9000); // 4 digit acak
+                kodeField.value = `${initials}-${randomNumber}`;
+            }
+        }
     </script>
 
 

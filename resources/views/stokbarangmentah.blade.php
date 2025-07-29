@@ -34,11 +34,9 @@
                     <div>
                         <select id="kategori" name="kategori" class="h-12 w-full border border-gray-300 rounded-lg px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600">
                             <option value="" class="text-gray-400">Semua Kategori</option>
-                            {{-- Opsi kategori Anda --}}
                             <option value="BedUnit" @if(request('kategori')=='BedUnit' ) selected @endif>BED UNIT</option>
                             <option value="Benang500Y" @if(request('kategori')=='Benang500Y' ) selected @endif>Benang 500Y</option>
                             <option value="Benang5000Y" @if(request('kategori')=='Benang5000Y' ) selected @endif>Benang 5000Y</option>
-                            {{-- Tambahkan sisa opsi Anda di sini dengan pola yang sama --}}
                             <option value="AtasanSMPLaki-Laki" @if(request('kategori')=='AtasanSMPLaki-Laki' ) selected @endif>Atasan SMP Laki-Laki</option>
                         </select>
                     </div>

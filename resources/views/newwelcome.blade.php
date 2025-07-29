@@ -91,22 +91,33 @@
                         </svg>
                         Stok Opname
                     </a>
-                    <a href="/homebarangmasuk" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('barangmasuk*') ? 'bg-green-900 font-bold' : '' }}">
-                        <svg class="h-6 w-6 text-green-200" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13.4953 3.375H3.375V23.625H13.5" stroke="white" stroke-width="1.6875" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M14.0625 18.5625L9 13.5L14.0625 8.4375" stroke="white" stroke-width="1.6875" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M23.625 13.4954H9" stroke="white" stroke-width="1.6875" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Barang Masuk
-                    </a>
-                    <a href="/homebarangkeluar" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('homebarangkeluar*') ? 'bg-green-900 font-bold' : '' }}">
-                        <svg class="h-6 w-6 text-yellow-200" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12.9955 3.25H3.25V22.75H13" stroke="white" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M17.875 17.875L22.75 13L17.875 8.125" stroke="white" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M8.66669 12.9955H22.75" stroke="white" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Barang Keluar
-                    </a>
+                    <div x-data="{ openTransaksi: {{ Request::is('transaksi*') ? 'true' : 'false' }} }">
+                        <button @click="openTransaksi = !openTransaksi"
+                            class="flex items-center justify-between w-full px-4 py-2 mt-2 text-left rounded-md text-gray-100 hover:bg-green-900 group {{ Request::is('homebarangmasuk*') || Request::is('homebarangkeluar*') ? 'bg-green-900 font-bold' : '' }}">
+                            <div class="flex items-center gap-x-2">
+                                <svg class="w-6 h-6 text-blue-200" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18" />
+                                </svg>
+                                Transaksi
+                            </div>
+                            <svg :class="{'transform rotate-90': openTransaksi}" class="w-4 h-4 transition-transform duration-200"
+                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+
+                        <div x-show="openTransaksi" x-collapse class="pl-12 mt-2 space-y-1 text-sm text-gray-200">
+                            <a href="/homebarangmasuk"
+                                class="block px-2 py-1 rounded hover:bg-green-800 {{ Request::is('homebarangmasuk*') ? 'bg-green-800 font-semibold' : '' }}">
+                                Barang Masuk
+                            </a>
+                            <a href="/homebarangkeluar"
+                                class="block px-2 py-1 rounded hover:bg-green-800 {{ Request::is('homebarangkeluar*') ? 'bg-green-800 font-semibold' : '' }}">
+                                Barang Keluar
+                            </a>
+                        </div>
+                    </div>
                     @endif
 
                     @if(auth()->user()->role === 'user')
@@ -117,6 +128,14 @@
                             <path d="M10 10H14V14H10V10Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
                         </svg>
                         Barang Mentah Masuk
+                    </a>
+                    <a href="/daftarpengajuan" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('daftarpengajuan*') ? 'bg-green-900 font-bold' : '' }}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3H21V21H3V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M7 7H17V17H7V7Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M10 10H14V14H10V10Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                        </svg>
+                        Daftar Pengajuan 
                     </a>
                     <a href="/barangmentahkeluar" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('barangmentahkeluar*') ? 'bg-green-900 font-bold' : '' }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

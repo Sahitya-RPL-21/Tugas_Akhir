@@ -7,6 +7,7 @@ use App\Models\BarangModel;
 use App\Models\StokOpname;
 use App\Models\Masuk;
 use App\Models\Keluar;
+use App\Models\Pengadaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -102,19 +103,42 @@ class BarangController extends Controller
 
     public function tampilkanbarangsearch(Request $request)
     {
-        $query = \App\Models\BarangModel::query();
+        $queryHistori = \App\Models\Masuk::whereHas('barang', function ($q) use ($request) {
+            $q->where('jenis_barang', 'jadi');
 
-        // Jika ada pencarian
-        if ($request->has('search') && $request->search != '') {
-            $query->where(function ($q) use ($request) {
-                $q->where('nama_barang', 'like', '%' . $request->search . '%')
-                    ->orWhere('kode_barang', 'like', '%' . $request->search . '%');
-            });
-        }
+            // Fitur Search
+            if ($request->filled('search')) {
+                $q->where(function ($subQuery) use ($request) {
+                    $subQuery->where('nama_barang', 'like', '%' . $request->search . '%')
+                        ->orWhere('kode_barang', 'like', '%' . $request->search . '%')
+                        ->orWhere('kategori_barang', 'like', '%' . $request->search . '%');
+                });
+            }
 
-        $barang = $query->paginate(15);
+            // Fitur Filter Kategori
+            if ($request->filled('kategori')) {
+                $q->where('kategori_barang', $request->kategori);
+            }
+        });
 
-        return view('homebarangmasuk', compact('barang'));
+        $histori = $queryHistori->with(['barang', 'user'])->orderBy('created_at', 'desc')->get();
+
+        // Untuk dropdown input barang
+        $barang = \App\Models\BarangModel::where('jenis_barang', 'jadi')->get();
+
+        return view('homebarangmasuk', compact('histori', 'barang'));
+    }
+
+
+    // menampilkan data barang
+    public function tampilkanbarang(Request $request = null)
+    {
+        // $halaman = session('halaman', 15);
+        $databarang = BarangModel::where('jenis_barang', 'jadi')->paginate(15);
+        $histori = \App\Models\Masuk::whereHas('barang', function ($query) {
+            $query->where('jenis_barang', 'jadi');
+        })->with('barang')->orderBy('created_at', 'desc')->get();
+        return view('homebarangmasuk', ['barang' => $databarang, 'histori' => $histori]);
     }
 
     public function inventory(Request $request)
@@ -266,17 +290,6 @@ class BarangController extends Controller
     {
         $barang = BarangModel::select('nama_barang', 'stok_barang')->get();
         return view('homebarangmasuk', compact('barang'));
-    }
-
-    // menampilkan data barang
-    public function tampilkanbarang(Request $request = null)
-    {
-        // $halaman = session('halaman', 15);
-        $databarang = BarangModel::where('jenis_barang', 'jadi')->paginate(15);
-        $histori = \App\Models\Masuk::whereHas('barang', function ($query) {
-            $query->where('jenis_barang', 'jadi');
-        })->with('barang')->orderBy('created_at', 'desc')->get();
-        return view('homebarangmasuk', ['barang' => $databarang, 'histori' => $histori]);
     }
 
     public function hapus($kode_barang)
@@ -454,6 +467,35 @@ class BarangController extends Controller
         })->with('barang')->orderBy('created_at', 'desc')->get();
         return view('homebarangkeluar', ['barang' => $databarang, 'historiKeluar' => $histori]);
     }
+
+    public function tampilkanbarangkeluarsearch(Request $request)
+    {
+        $queryHistori = \App\Models\Keluar::whereHas('barang', function ($q) use ($request) {
+            $q->where('jenis_barang', 'jadi');
+
+            // Fitur Search
+            if ($request->filled('search')) {
+                $q->where(function ($subQuery) use ($request) {
+                    $subQuery->where('nama_barang', 'like', '%' . $request->search . '%')
+                        ->orWhere('kode_barang', 'like', '%' . $request->search . '%')
+                        ->orWhere('kategori_barang', 'like', '%' . $request->search . '%');
+                });
+            }
+
+            // Fitur Filter Kategori
+            if ($request->filled('kategori')) {
+                $q->where('kategori_barang', $request->kategori);
+            }
+        });
+
+        $historiKeluar = $queryHistori->with(['barang', 'user'])->orderBy('created_at', 'desc')->get();
+
+        // Untuk dropdown input barang
+        $barang = \App\Models\BarangModel::where('jenis_barang', 'jadi')->get();
+
+        return view('homebarangkeluar', compact('historiKeluar', 'barang'));
+    }
+
     public function tambahBarangKeluar(Request $request)
     {
         $request->validate([
@@ -510,7 +552,7 @@ class BarangController extends Controller
         $histori = Masuk::whereHas('barang', function ($sahit) {
             $sahit->where('jenis_barang', 'mentah');
         })->with('barang')->orderBy('created_at', 'desc')->get();
-        return view('barangmentahmasuk', ['barang' => $databarang, 'histori' => $histori]);
+        return view('barangmentahmasuk', ['barang' => $databarang, 'histori' => $histori,'barangMentah' => $databarang]);
     }
 
     public function tambahBarangMentah(Request $request)
@@ -586,6 +628,50 @@ class BarangController extends Controller
         $barang->save();
 
         return redirect()->route('barangmentahkeluar')->with('success', 'Barang keluar berhasil dicatat dan stok diperbarui.');
+    }
+
+    /* controller pengajuan barang mentah */
+    public function daftarPengajuan()
+    {
+        $databarang = BarangModel::where('jenis_barang', 'mentah')->paginate(15);
+        $pengajuan = Pengadaan::with('barang')->orderBy('created_at', 'desc')->get();
+        return view('daftarpengajuan', ['pengajuan' => $pengajuan, 'barangMentah' => $databarang]);
+    }
+
+    public function tambahPengadaan (Request $request)
+    {
+        $request->validate([
+            'barang_id' => 'required|exists:barang,id',
+            'jumlah' => 'required|integer|min:1',
+        ]);
+
+        // Cari barang berdasarkan barang_id
+        $barang = BarangModel::where('id', $request->barang_id)->first();
+
+        if (!$barang) {
+            return redirect()->back()->with('error', 'Barang tidak ditemukan.');
+        }
+
+        // Catat histori barang masuk
+        Pengadaan::create([
+            'tanggal_pengadaan' => now(),
+            'barang_id' => $request->barang_id,
+            'jumlah' => (int) $request->jumlah,
+            'user_id' => Auth::user()->id,
+        ]);
+
+
+        return redirect()->route('daftarpengajuan')->with('success', 'Pengadaan barang mentah berhasil dicatat dan stok diperbarui.');
+    }
+
+    public function apipengajuanBarangMentah()
+    {
+        $pengadaan = Pengadaan::with('barang')->where('status_pengadaan', 'diajukan')->orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $pengadaan
+        ]);
     }
 
     // API untuk update stok barang

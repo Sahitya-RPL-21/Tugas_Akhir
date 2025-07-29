@@ -129,13 +129,13 @@
                         </svg>
                         Barang Mentah Masuk
                     </a>
-                    <a href="/daftarpengajuan" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('daftarpengajuan*') ? 'bg-green-900 font-bold' : '' }}">
+                    <a href="/daftarpengadaan" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('daftarpengadaan*') ? 'bg-green-900 font-bold' : '' }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3 3H21V21H3V3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
                             <path d="M7 7H17V17H7V7Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
                             <path d="M10 10H14V14H10V10Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
                         </svg>
-                        Daftar Pengajuan 
+                        Daftar Pengadaan
                     </a>
                     <a href="/barangmentahkeluar" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('barangmentahkeluar*') ? 'bg-green-900 font-bold' : '' }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -159,6 +159,20 @@
                         Laporan Barang
                     </a>
                     @endif
+
+                    @if(auth()->user()->role === 'produksi')
+                    <div class="mt-auto">
+                        <a href="/homeproduksi" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('pengajuanbarangme*') ? 'bg-green-900 font-bold' : '' }}">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                                <path d="M12 12V17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+                            Pengajuan Produksi
+                        </a>
+                    </div>
+                    @endif
+
+
 
                     <div class="mb-2 relative group">
                         @if(auth()->user()->role === 'admin')

@@ -61,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/masterbarang/{id}', [BarangController::class, 'destroyMaster'])->name('masterbarang.destroy');
 
     // Stok Barang & Stok Opname
-    // Route::get('/stokbarang', [BarangController::class, 'stokbarang'])->name('stokbarang');
+    Route::get('/stokbarang', [BarangController::class, 'stokbarang'])->name('stokbarang');
     Route::get('/stokbarang', [BarangController::class, 'caristokbarang'])->name('stokbarang.search');
     Route::get('/stokbarang/mentah', [BarangController::class, 'stokBarangMentah'])->name('stokbarang.mentah');
     Route::get('/stokbarang/jadi', [BarangController::class, 'stokBarangJadi'])->name('stokbarang.jadi');
@@ -87,9 +87,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/barangmentahkeluar/tambah', [BarangController::class, 'tambahBarangMentahKeluar'])->name('barangmentah.tambahkeluar');
     Route::delete('/barangmentahkeluar/{id}', [BarangController::class, 'destroyBarangKeluar'])->name('barangmentahkeluar.destroy'); // <-- ROUTE BARU UNTUK HAPUS BARANG KELUAR
 
-    /*route pengajuan pengadaan barang mentah*/
-    Route::get('/daftarpengajuan', [BarangController::class, 'daftarPengajuan'])->name('daftarpengajuan');
-    Route::post('/pengajuanpengadaan/tambah', [BarangController::class, 'tambahPengadaan'])->name('pengadaanbarangmentah');
+    /*route pengadaan barang mentah*/
+    Route::get('/daftarpengadaan', [BarangController::class, 'daftarPengadaan'])->name('daftarpengadaan');
+    Route::post('/pengadaanbarangmentah/tambah', [BarangController::class, 'tambahPengadaan'])->name('pengadaanbarangmentah');
     /*  
     |--------------------------------------------------------------------------
     | Transaksi Barang Jadi (Home)
@@ -119,6 +119,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporan-barang/cetak', [LaporanBarangController::class, 'cetak'])->name('laporanbarang.cetak');
     Route::get('/stokbarangkepala', [BarangController::class, 'stokBarangKepala'])->name('stokbarangkepala');
 
+        /*route produksi*/
+    Route::middleware('role:produksi')->group(function () {
+        Route::get('/pengajuanbarangmentah', [BarangController::class, 'produksi'])->name('pengajuanbarangmentah');
+        Route::post('/pengajuanbarangmentah/tambah', [BarangController::class, 'tambahPengajuanBarangMentah'])->name('pengajuanbarangmentah.tambah');
+    });
 
     /*
     |--------------------------------------------------------------------------

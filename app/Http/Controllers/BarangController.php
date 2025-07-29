@@ -8,6 +8,7 @@ use App\Models\StokOpname;
 use App\Models\Masuk;
 use App\Models\Keluar;
 use App\Models\Pengadaan;
+use App\Models\PengajuanProduksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -631,11 +632,11 @@ class BarangController extends Controller
     }
 
     /* controller pengajuan barang mentah */
-    public function daftarPengajuan()
+    public function daftarPengadaan()
     {
         $databarang = BarangModel::where('jenis_barang', 'mentah')->paginate(15);
-        $pengajuan = Pengadaan::with('barang')->orderBy('created_at', 'desc')->get();
-        return view('daftarpengajuan', ['pengajuan' => $pengajuan, 'barangMentah' => $databarang]);
+        $pengadaan = Pengadaan::with('barang')->orderBy('created_at', 'desc')->get();
+        return view('daftarpengadaan', ['pengadaan' => $pengadaan, 'barangMentah' => $databarang]);
     }
 
     public function tambahPengadaan (Request $request)
@@ -660,7 +661,6 @@ class BarangController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
-
         return redirect()->route('daftarpengajuan')->with('success', 'Pengadaan barang mentah berhasil dicatat dan stok diperbarui.');
     }
 
@@ -672,6 +672,41 @@ class BarangController extends Controller
             'status' => 'success',
             'data' => $pengadaan
         ]);
+    }
+
+    // controller produksi
+    public function produksi()
+    {
+        $barangMentah = BarangModel::where('jenis_barang', 'mentah')->get();
+        $pengajuanProduksi = PengajuanProduksi::with('barangMentah')->orderBy('created_at', 'desc')->get();
+        return view('homeproduksi', compact('barangMentah', 'pengajuanProduksi'));
+    }
+
+    public function tambahPengajuanBarangMentah (Request $request)
+    {
+        $request->validate([
+            'barang_id' => 'required|exists:barang,id',
+            'jumlah' => 'required|integer|min:1',
+            'keterangan' => 'nullable|string|max:255'
+        ]);
+
+        // Cari barang berdasarkan barang_id
+        $barang = BarangModel::where('id', $request->barang_id)->first();
+
+        if (!$barang) {
+            return redirect()->back()->with('error', 'Barang tidak ditemukan.');
+        }
+
+        // Catat histori pengajuan barang mentah
+        PengajuanProduksi::create([
+            'barang_mentah_id' => $request->barang_id,
+            'jumlah_pengajuan' => (int) $request->jumlah,
+            'keterangan' => $request->keterangan,
+            'user_id' => Auth::user()->id,
+            'status_pengajuan' => 'diajukan', // Status awal pengajuan
+        ]);
+
+        return redirect()->route('pengajuanbarangmentah')->with('success', 'Pengajuan barang mentah berhasil dibuat.');
     }
 
     // API untuk update stok barang

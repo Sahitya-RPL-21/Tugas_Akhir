@@ -80,6 +80,7 @@
                         <option value="user">Admin Stok</option>
                         <option value="kepala">Kepala TPKU</option>
                         <option value="admin">Super Admin</option>
+                        <option value="produksi">Admin Produksi</option>
                     </select>
                 </div>
                 <div class="mb-4">
@@ -121,6 +122,7 @@
                         <option value="user">Admin Stok</option>
                         <option value="kepala">Kepala TPKU</option>
                         <option value="admin">Super Admin</option>
+                        <option value="produksi">Admin Produksi</option>
                     </select>
                 </div>
                 <div class="mb-4">

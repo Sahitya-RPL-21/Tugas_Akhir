@@ -33,7 +33,9 @@ class UserController extends Controller
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('homeadmin')->with('message', 'Login successful');
             } elseif (Auth::user()->role === 'kepala') {
-                return redirect()->route('stokbarang')->with('message', 'Login successful');
+                return redirect()->route('stokbarang.search')->with('message', 'Login successful');
+            } elseif (Auth::user()->role === 'produksi') {
+                return redirect()->route('pengajuanbarangmentah')->with('message', 'Login successful');
             }
             return redirect()->route('home')->with('message', 'Login successful');
         }
@@ -99,14 +101,15 @@ class UserController extends Controller
         return view('homeadmin');
     }
 
-    
+
 
     public function tambahpengguna(Request $request)
     {
         $validated = $request->validate([
             'username' => 'required|unique:users,username',
             'password' => 'required|confirmed|min:5',
-            'role' => 'required|in:user,kepala,admin',
+            'role' => 'required|in:user,kepala,admin,produksi',
+
         ]);
 
         User::create([

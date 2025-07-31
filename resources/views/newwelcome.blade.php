@@ -82,7 +82,6 @@
                             </a>
                         </div>
                     </div>
-
                     @endif
                     @if(auth()->user()->role === 'user')
                     <a href="/stokopname" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('stokopname*') ? 'bg-green-900 font-bold' : '' }}">
@@ -92,8 +91,9 @@
                         </svg>
                         Stok Opname
                     </a>
+                    @endif
 
-                    
+                    @if(auth()->user()->role === 'user'|| auth()->user()->role === 'kepala')
                     <div x-data="{ openTransaksi: {{ Request::is('transaksi*') ? 'true' : 'false' }} }">
                         <button @click="openTransaksi = !openTransaksi"
                             class="flex items-center justify-between w-full px-4 py-2 mt-2 text-left rounded-md text-gray-100 hover:bg-green-900 group {{ Request::is('homebarangmasuk*') || Request::is('homebarangkeluar*') ? 'bg-green-900 font-bold' : '' }}">

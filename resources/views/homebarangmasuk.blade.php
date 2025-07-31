@@ -12,7 +12,7 @@
         <p class="text-gray-600 mb-6">Halaman data barang masuk.</p>
 
         <!-- Search and Filter Section hanya tampil jika tipe == 'jadi' -->
-        <div x-show="tipe === 'jadi'" class="p-4">
+        <div class="p-4">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
                 <form method="GET" action="{{ route('homebarangmasuk.search') }}">
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">

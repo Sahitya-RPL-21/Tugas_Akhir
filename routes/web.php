@@ -109,10 +109,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/homebarangkeluar/tambah', [BarangController::class, 'tambahBarangKeluar'])->name('homebarangkeluar.tambah');
     Route::delete('/homebarangkeluar/{id}/hapus', [BarangController::class, 'hapusBarangKeluar'])->name('homebarangkeluar.hapus');
 
-
+// pengajuan produksi
+    Route::get('/pengajuanproduksi', [BarangController::class, 'PengajuanProduksi'])->name('pengajuanproduksi');
+    Route::put('/pengajuanproduksi/{id}/keputusan', [BarangController::class, 'keputusanPengajuan'])->name('pengajuanproduksi.keputusan');
     /*
     |--------------------------------------------------------------------------
-    | Laporan & Halaman Khusus Kepala
+    | Laporan Barang
     |--------------------------------------------------------------------------
     */
     Route::get('/laporanbarang', [LaporanBarangController::class, 'laporanBarang'])->name('laporanbarang');

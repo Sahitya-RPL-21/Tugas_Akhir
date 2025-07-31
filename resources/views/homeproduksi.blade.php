@@ -32,7 +32,7 @@
                 </div>
 
                 <div>
-                    <label for="jumlah" class="block text-gray-700 mb-2">Jumlah</label>
+                    <label for="jumlah" class="block text-gray-700 mb-2">Jumlah/Kuantitas</label>
                     <div class="flex">
                         <input type="number" id="jumlah" name="jumlah" min="1" required placeholder="Masukkan jumlah"
                             class="w-full p-3 border border-gray-300 rounded-l-lg">

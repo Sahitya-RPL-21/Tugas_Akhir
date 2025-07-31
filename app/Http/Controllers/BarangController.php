@@ -661,17 +661,7 @@ class BarangController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
-        return redirect()->route('daftarpengajuan')->with('success', 'Pengadaan barang mentah berhasil dicatat dan stok diperbarui.');
-    }
-
-    public function apipengajuanBarangMentah()
-    {
-        $pengadaan = Pengadaan::with('barang')->where('status_pengadaan', 'diajukan')->orderBy('created_at', 'desc')->get();
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $pengadaan
-        ]);
+        return redirect()->route('daftarpengadaan')->with('success', 'Pengadaan barang mentah berhasil dicatat dan stok diperbarui.');
     }
 
     // controller produksi
@@ -707,6 +697,50 @@ class BarangController extends Controller
         ]);
 
         return redirect()->route('pengajuanbarangmentah')->with('success', 'Pengajuan barang mentah berhasil dibuat.');
+    }
+
+    public function PengajuanProduksi()
+    {
+        $barangMentah = BarangModel::where('jenis_barang', 'mentah')->get();
+        $pengajuanProduksi = PengajuanProduksi::with('barangMentah')->orderBy('created_at', 'desc')->get();
+        return view('pengajuanproduksi', compact('pengajuanProduksi'));
+    }
+
+    public function tambahPengajuanProduksi(Request $request)
+    {
+        $request->validate([
+            'barang_mentah_id' => 'required|exists:barang,id',
+            'jumlah_pengajuan' => 'required|integer|min:1',
+            'keterangan' => 'nullable|string|max:255'
+        ]);
+
+        // Cari barang berdasarkan barang_id
+        $barang = BarangModel::where('id', $request->barang_mentah_id)->first();
+
+        if (!$barang) {
+            return redirect()->back()->with('error', 'Barang tidak ditemukan.');
+        }
+
+        // Catat histori pengajuan produksi
+        PengajuanProduksi::create([
+            'barang_mentah_id' => $request->barang_mentah_id,
+            'jumlah_pengajuan' => (int) $request->jumlah_pengajuan,
+            'keterangan' => $request->keterangan,
+            'user_id' => Auth::user()->id,
+            'status_pengajuan' => 'diajukan', // Status awal pengajuan
+        ]);
+
+        return redirect()->route('pengajuanproduksi')->with('success', 'Pengajuan produksi berhasil dibuat.');
+    }
+
+    public function apipengajuanBarangMentah()
+    {
+        $pengadaan = Pengadaan::with('barang')->where('status_pengadaan', 'diajukan')->orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $pengadaan
+        ]);
     }
 
     // API untuk update stok barang

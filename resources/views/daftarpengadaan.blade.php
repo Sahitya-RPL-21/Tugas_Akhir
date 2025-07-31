@@ -12,7 +12,7 @@
         <div class="mb-6 w-full max-w-7xl mx-auto px-4 flex justify-end">
             <button type="button"
                 class="h-12 flex items-center gap-2 bg-[#173720] hover:bg-green-700 text-white font-medium px-5 rounded-lg shadow"
-                onclick="document.getElementById('modalpengadaan').classList.remove('hidden')">
+                onclick="document.getElementById('modalpengajuanpengadaan').classList.remove('hidden')">
                 <svg class="h-6 w-6" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                 </svg>

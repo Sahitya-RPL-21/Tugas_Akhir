@@ -9,6 +9,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/gambar/stokinlogo.ico') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
             font-family: 'Helvetica', sans-serif;
@@ -50,7 +51,7 @@
                     </a>
                     @endif
                     @if(auth()->user()->role === 'user'|| auth()->user()->role === 'kepala')
-                    <div x-data="{ openStokBarang: {{ Request::is('stokbarang*') ? 'true' : 'false' }} }">
+                    <div x-data="{ openStokBarang: {{ Request::is('stokbarang*') ? 'true' : 'false' }} }" class="w-full">
                         <button @click="openStokBarang = !openStokBarang"
                             class="flex items-center justify-between w-full px-4 py-2 mt-2 text-left rounded-md text-gray-100 hover:bg-green-900 group {{ Request::is('stokbarang*') ? 'bg-green-900 font-bold' : '' }}">
                             <div class="flex items-center gap-x-2">
@@ -63,14 +64,14 @@
                                 </svg>
                                 Stok Barang
                             </div>
-                            <svg :class="{'transform rotate-90': openStokBarang}" class="w-4 h-4 transition-transform duration-200"
+                            <svg :class="{'rotate-90': openStokBarang}" class="w-4 h-4 transition-transform duration-300"
                                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
                             </svg>
                         </button>
-
-                        <div x-show="openStokBarang" x-collapse class="pl-12 mt-2 space-y-1 text-sm text-gray-200">
+                        <div x-show="openStokBarang" x-collapse
+                            class="pl-12 mt-2 space-y-1 text-sm text-gray-200 overflow-hidden transition-all duration-300 ease-in-out">
                             <a href="/stokbarang/jadi"
                                 class="block px-2 py-1 rounded hover:bg-green-800 {{ Request::is('stokbarang/jadi*') ? 'bg-green-800 font-semibold' : '' }}">
                                 Barang Jadi
@@ -91,6 +92,8 @@
                         </svg>
                         Stok Opname
                     </a>
+
+                    
                     <div x-data="{ openTransaksi: {{ Request::is('transaksi*') ? 'true' : 'false' }} }">
                         <button @click="openTransaksi = !openTransaksi"
                             class="flex items-center justify-between w-full px-4 py-2 mt-2 text-left rounded-md text-gray-100 hover:bg-green-900 group {{ Request::is('homebarangmasuk*') || Request::is('homebarangkeluar*') ? 'bg-green-900 font-bold' : '' }}">
@@ -99,7 +102,7 @@
                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18" />
                                 </svg>
-                                Transaksi
+                                Transaksi Barang
                             </div>
                             <svg :class="{'transform rotate-90': openTransaksi}" class="w-4 h-4 transition-transform duration-200"
                                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -135,7 +138,14 @@
                             <path d="M7 7H17V17H7V7Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
                             <path d="M10 10H14V14H10V10Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
                         </svg>
-                        Daftar Pengadaan
+                        Pengadaan Barang Mentah
+                    </a>
+                    <a href="/pengajuanproduksi" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('daftarpengajuanproduksi*') ? 'bg-green-900 font-bold' : '' }}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M12 12V17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                        Pengajuan Produksi
                     </a>
                     <a href="/barangmentahkeluar" class="flex items-center rounded-md gap-x-2 w-full px-4 py-2 mt-2 text-left text-gray-100 hover:bg-green-900 group {{ Request::is('barangmentahkeluar*') ? 'bg-green-900 font-bold' : '' }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -171,8 +181,6 @@
                         </a>
                     </div>
                     @endif
-
-
 
                     <div class="mb-2 relative group">
                         @if(auth()->user()->role === 'admin')
